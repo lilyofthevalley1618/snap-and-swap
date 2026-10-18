@@ -30,7 +30,10 @@ const macros=t=>`<div class="macros"><div><b>${Math.round(t.p)}g</b>Protein</div
 const views={
  home(){const P=plan(S.profile),t=tot(),st=S.steps[today()]||0,lw=S.weights.at(-1);
   return `<h2>Hi, ${esc(S.name||'there')}!</h2><p class="sub">Small steps, every day. You've got this.</p>
-  <div class="card">${ring(t.kcal,P.target,`of ${P.target} kcal`)}${macros(t)}</div>
+  <div class="card limit"><p class="sub">Your daily limit</p><div class="big">${P.target.toLocaleString()} cal <span class="sub">to stay on track</span></div>
+  ${ring(t.kcal,P.target,`eaten of ${P.target.toLocaleString()}`)}
+  <div class="row between" style="margin:8px 0 12px"><span>Eaten <b>${t.kcal.toLocaleString()}</b></span><span>${t.kcal<=P.target?`<b>${(P.target-t.kcal).toLocaleString()}</b> left`:'<b>A bit over today</b>'}</span></div>
+  ${t.kcal>P.target?'<p class="note">A bit over today, tomorrow\'s a fresh start. 🌱</p>':''}${macros(t)}</div>
   <div class="card"><h3>👟 Steps</h3><div class="row">${ring(st,S.stepGoal,`of ${S.stepGoal}`,110)}<div class="grow">
    <label>Steps today</label><input id="st" type="number" inputmode="numeric" value="${st||''}" placeholder="e.g. 6000">
    <button class="btn sm" id="stsave" style="margin-top:8px">Save</button></div></div>
