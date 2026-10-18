@@ -1,8 +1,9 @@
-import {load,save,today} from './store.js?v=1';
-import {plan,validate,goalDate,minHealthyWeight} from './calc.js?v=1';
-import {ai} from './ai.js?v=1';
-import {FOODS,swapFor} from './foods.js?v=1';
-import {ManualStepsSource} from './steps.js?v=1';
+import {load,save,today} from './store.js?v=2';
+import {plan,validate,goalDate,minHealthyWeight} from './calc.js?v=2';
+import {ai} from './ai.js?v=2';
+import {FOODS,swapFor} from './foods.js?v=2';
+import {ManualStepsSource} from './steps.js?v=2';
+import {runSurvey} from './survey.js?v=2';
 
 const S=load(); const persist=()=>save(S); const steps=new ManualStepsSource(S,save);
 const $=s=>document.querySelector(s), V=$('#view');
@@ -11,7 +12,7 @@ const DISC='<p class="note">Snap &amp; Swap gives estimates, not medical advice.
 let pending=null; // current snap analysis
 
 if(new URLSearchParams(location.search).has('demo')&&!S.profile){
-  S.profile={age:16,sex:'female',height:64,weight:150,goal:135,activity:'moderate',pace:0.5};
+  S.name='Lily';S.profile={age:16,sex:'female',height:64,weight:150,goal:135,activity:'moderate',pace:0.5};
   const d=today();S.meals[d]=[{id:1,name:'Oatmeal + banana',kcal:270,p:7,c:55,f:4,t:'Breakfast'},{id:2,name:'Cheeseburger + French fries (medium)',kcal:900,p:32,c:88,f:46,t:'Lunch'}];
   for(let i=6;i>=0;i--){const x=new Date();x.setDate(x.getDate()-i*5);S.weights.push({d:x.toLocaleDateString('en-CA'),w:150-(6-i)*0.6+(i%2)*0.3})}
   S.steps[d]=5400;persist();
@@ -28,7 +29,7 @@ const macros=t=>`<div class="macros"><div><b>${Math.round(t.p)}g</b>Protein</div
 
 const views={
  home(){const P=plan(S.profile),t=tot(),st=S.steps[today()]||0,lw=S.weights.at(-1);
-  return `<h2>Today</h2><p class="sub">Small steps, every day. You've got this.</p>
+  return `<h2>Hi, ${esc(S.name||'there')}!</h2><p class="sub">Small steps, every day. You've got this.</p>
   <div class="card">${ring(t.kcal,P.target,`of ${P.target} kcal`)}${macros(t)}</div>
   <div class="card"><h3>👟 Steps</h3><div class="row">${ring(st,S.stepGoal,`of ${S.stepGoal}`,110)}<div class="grow">
    <label>Steps today</label><input id="st" type="number" inputmode="numeric" value="${st||''}" placeholder="e.g. 6000">
@@ -42,7 +43,7 @@ const views={
   <div class="card"><h3>🔎 Or search a food</h3><input id="q" placeholder="e.g. rice, pizza, banana"><div id="ql"></div></div>${DISC}`},
  log(){const P=plan(S.profile),t=tot();
   return `<h2>Food log</h2><p class="sub">${t.kcal} of ${P.target} kcal today</p>
-  <div class="card">${meals().length?meals().map(m=>{const sw=swapFor(m.name);return `<div class="item"><div class="grow"><b>${esc(m.name)}</b><div class="sub">${m.t||''} · ${m.kcal} kcal · P${m.p} C${m.c} F${m.f}</div>
+  <div class="card">${meals().length?meals().map(m=>{const sw=swapFor(m.name,S.prefs);return `<div class="item"><div class="grow"><b>${esc(m.name)}</b><div class="sub">${m.t||''} · ${m.kcal} kcal · P${m.p} C${m.c} F${m.f}</div>
    ${sw?`<div class="swap">🌿 <b>Try:</b> ${esc(sw.to)} — ${sw.why}, about ${sw.saves} kcal lighter</div>`:''}</div>
    <div><button class="x" data-edit="${m.id}" title="Edit">✏️</button><button class="x" data-del="${m.id}" title="Delete">✕</button></div></div>`}).join(''):'<p class="sub">Nothing logged yet. Snap your first meal!</p>'}</div>
   <p class="note">Swaps are ideas, not rules. Every food fits — swaps just add more fiber, protein and veggies.</p>`},
@@ -66,7 +67,7 @@ const views={
   <div><label>Pace</label><select name="pace">${o(0.5,'0.5 lb/week',p.pace)}${o(1,'1 lb/week',p.pace)}</select></div></div>
   <label>Activity</label><select name="activity">${o('sedentary','Mostly sitting',p.activity)}${o('light','Lightly active',p.activity)}${o('moderate','Active most days',p.activity)}${o('active','Very active',p.activity)}</select>
   <label>Daily step goal</label><input name="stepGoal" type="number" value="${S.stepGoal}">
-  <p id="err" class="note warn" hidden></p><button class="btn">Save</button></form>${DISC}`}
+  <p id="err" class="note warn" hidden></p><button class="btn">Save</button><button type="button" class="btn ghost" id="resurvey">Edit name, goals &amp; food preferences</button></form>${DISC}`}
 };
 function chart(ws,goal){if(!ws.length)return '<p class="sub">Log weigh-ins to see your chart.</p>';
  const W=340,H=170,pd=24,vals=ws.map(x=>x.w).concat(goal),mn=Math.min(...vals)-2,mx=Math.max(...vals)+2;
@@ -90,11 +91,12 @@ let photoURL=null;
 async function analyze(blob){$('#res').innerHTML='<p class="sub">Estimating…</p>';
  try{const r=await ai().analyzeMeal(blob);$('#res').innerHTML=resultCard(r,photoURL)}catch(e){$('#res').innerHTML=`<p class="note warn">${esc(e.message)} Try the food search below.</p>`}}
 
-function go(t){if(!S.profile)t='profile';location.hash=t;
+function go(t){location.hash=t;
  document.querySelectorAll('.tabs a').forEach(a=>a.classList.toggle('on',a.dataset.t===t));V.innerHTML=views[t]();window.scrollTo(0,0);
  if(t==='snap'&&new URLSearchParams(location.search).has('demo'))analyze(null);}
 
-document.addEventListener('click',e=>{const el=e.target.closest('[data-t],[data-go],[data-del],[data-edit],#addm,#stsave,#wsave,[data-food]');if(!el)return;
+document.addEventListener('click',e=>{if(e.target.closest('.survey'))return;const el=e.target.closest('#resurvey,[data-t],[data-go],[data-del],[data-edit],#addm,#stsave,#wsave,[data-food]');if(!el)return;
+ if(el.id==='resurvey'){runSurvey(S,()=>{persist();go('home')});return}
  if(el.dataset.t||el.dataset.go)return go(el.dataset.t||el.dataset.go);
  if(el.dataset.del){S.meals[today()]=meals().filter(m=>m.id!=el.dataset.del);persist();return go('log')}
  if(el.dataset.edit){const m=meals().find(m=>m.id==el.dataset.edit);const v=prompt('Calories for '+m.name,m.kcal);if(v&&+v>0){const k=+v/m.kcal;Object.assign(m,{kcal:Math.round(+v),p:Math.round(m.p*k),c:Math.round(m.c*k),f:Math.round(m.f*k)});persist()}return go('log')}
@@ -106,8 +108,9 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-t],[data-
 document.addEventListener('input',e=>{if(e.target.id==='por')scaleResult();
  if(e.target.id==='q'){const q=e.target.value.toLowerCase().trim();$('#ql').innerHTML=q?FOODS.map((f,i)=>[f,i]).filter(([f])=>f.name.toLowerCase().includes(q)).slice(0,8).map(([f,i])=>`<div class="item" data-food="${i}" style="cursor:pointer"><span>${f.name}</span><span class="sub">${f.kcal} kcal</span></div>`).join('')||'<p class="sub">No match — try a simpler word.</p>':''}});
 document.addEventListener('change',e=>{if(e.target.id==='ph'&&e.target.files[0]){const f=e.target.files[0];photoURL=URL.createObjectURL(f);analyze(f)}});
-document.addEventListener('submit',e=>{e.preventDefault();const fd=Object.fromEntries(new FormData(e.target));
+document.addEventListener('submit',e=>{if(e.target.closest('.survey'))return;e.preventDefault();const fd=Object.fromEntries(new FormData(e.target));
  const p={age:+fd.age,sex:fd.sex,height:+fd.height,weight:+fd.weight,goal:+fd.goal,activity:fd.activity,pace:+fd.pace};
  const err=validate(p);if(err){$('#err').hidden=false;$('#err').textContent=err;return}
  S.profile=p;S.stepGoal=Math.max(1000,+fd.stepGoal||8000);if(!S.weights.length)S.weights.push({d:today(),w:p.weight});persist();go('home')});
-go(location.hash.slice(1)in views?location.hash.slice(1):'home');
+const start=()=>go(location.hash.slice(1)in views?location.hash.slice(1):'home');
+if(!S.profile){const sv=runSurvey(S,()=>{if(!S.weights.length)S.weights.push({d:today(),w:S.profile.weight});persist();go('home')});const n=new URLSearchParams(location.search).get('survey');if(n)sv.jump(+n)}else start();

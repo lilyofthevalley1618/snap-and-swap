@@ -22,3 +22,10 @@ input[type=range]{padding:0;accent-color:var(--charcoal)}
 .tabs a svg{display:block;margin:0 auto;padding:2px 12px;width:52px;height:32px;border-radius:16px}.tabs a span{display:block;font-size:11px}.tabs a.on{color:var(--charcoal);font-weight:600}.tabs a.on svg{background:var(--sage-tint)}
 .photo{width:100%;border-radius:14px;max-height:220px;object-fit:cover}
 .x{background:none;border:0;font-size:18px;color:var(--muted);min-width:40px;min-height:40px;cursor:pointer}
+.survey{position:fixed;inset:0;background:var(--cream);z-index:10;overflow:auto;padding:24px 20px}
+.survey .bar{height:6px;background:var(--sage-faint);border-radius:3px;max-width:480px;margin:0 auto}.survey .bar i{display:block;height:100%;background:var(--sage-deep);border-radius:3px;transition:width .3s}
+.sv{max-width:480px;margin:28px auto 0}.sv h2{font-size:28px;margin-bottom:12px}
+.nav{display:flex;gap:10px;margin-top:18px}.nav .btn{flex:1}
+.opts{display:grid;gap:10px}.opt{text-align:left;min-height:56px;border:1.5px solid var(--line);background:var(--card);border-radius:14px;padding:10px 14px;font-size:16px;color:var(--charcoal);cursor:pointer}
+.opt span{display:block;font-size:13px;color:var(--muted)}.opt.on{background:var(--sage-tint);border-color:var(--sage-deep)}
+.seg{display:inline-flex;background:var(--sage-faint);border-radius:12px;padding:3px;margin-bottom:10px}.seg button{border:0;background:none;min-width:56px;min-height:38px;border-radius:10px;font-size:15px;color:var(--charcoal);cursor:pointer}.seg button.on{background:var(--card);font-weight:600}

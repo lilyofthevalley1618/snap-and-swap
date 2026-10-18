@@ -1,7 +1,7 @@
 // AI provider interface. Every provider implements:
 //   analyzeMeal(imageBlob) -> {items:[{name,kcalLow,kcalHigh,p,c,f}], kcalLow,kcalHigh,p,c,f, confidence(0-1), provider}
 //   suggestSwap(mealName)  -> {to,why,saves}|null
-import {FOODS,swapFor} from './foods.js?v=1';
+import {FOODS,swapFor} from './foods.js?v=2';
 
 export const CONFIG={provider:'mock',PROXY_URL:''}; // Gemini disabled: no key, no proxy yet (see README)
 
@@ -15,7 +15,7 @@ export const MockProvider={
   name:'mock',
   async analyzeMeal(blob){await new Promise(r=>setTimeout(r,600));
     const i=blob&&blob.size?blob.size%SAMPLES.length:0; return {...build(SAMPLES[i],0.72),provider:'mock'}},
-  async suggestSwap(n){return swapFor(n)}
+  async suggestSwap(n,prefs){return swapFor(n,prefs)}
 };
 export const GeminiProvider={
   name:'gemini',
@@ -26,6 +26,6 @@ export const GeminiProvider={
     if(!r.ok)throw new Error('Analysis failed ('+r.status+')');
     return {...(await r.json()),provider:'gemini'}; // proxy returns the same shape as MockProvider
   },
-  async suggestSwap(n){return swapFor(n)} // later: POST PROXY_URL/swap
+  async suggestSwap(n,prefs){return swapFor(n,prefs)} // later: POST PROXY_URL/swap
 };
 export const ai=()=>CONFIG.provider==='gemini'&&CONFIG.PROXY_URL?GeminiProvider:MockProvider;
