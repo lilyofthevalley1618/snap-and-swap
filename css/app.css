@@ -19,7 +19,7 @@ input[type=range]{padding:0;accent-color:var(--charcoal)}
 .swap{background:var(--sage-faint);border-radius:12px;padding:10px 12px;margin-top:8px;font-size:14px}
 .tabs{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
 .tabs a{flex:1;text-align:center;padding:8px 0 10px;font-size:20px;text-decoration:none;color:var(--muted);cursor:pointer}
-.tabs a svg{display:block;margin:0 auto;padding:2px 12px;width:52px;height:32px;border-radius:16px}.tabs a span{display:block;font-size:11px}.tabs a.on{color:var(--charcoal);font-weight:600}.tabs a.on svg{background:var(--sage-tint)}
+.tabs a svg{display:block;margin:0 auto;padding:2px 8px;width:46px;height:32px;border-radius:16px}.tabs a span{display:block;font-size:11px}.tabs a.on{color:var(--charcoal);font-weight:600}.tabs a.on svg{background:var(--sage-tint)}
 .photo{width:100%;border-radius:14px;max-height:220px;object-fit:cover}
 .x{background:none;border:0;font-size:18px;color:var(--muted);min-width:40px;min-height:40px;cursor:pointer}
 .survey{position:fixed;inset:0;background:var(--cream);z-index:10;overflow:auto;padding:24px 20px}

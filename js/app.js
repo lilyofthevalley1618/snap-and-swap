@@ -15,7 +15,7 @@ if(new URLSearchParams(location.search).has('demo')&&!S.profile){
   S.name='Lily';S.profile={age:16,sex:'female',height:64,weight:150,goal:135,activity:'moderate',pace:0.5};
   const d=today();S.meals[d]=[{id:1,name:'Oatmeal + banana',kcal:270,p:7,c:55,f:4,t:'Breakfast'},{id:2,name:'Cheeseburger + French fries (medium)',kcal:900,p:32,c:88,f:46,t:'Lunch'}];
   for(let i=6;i>=0;i--){const x=new Date();x.setDate(x.getDate()-i*5);S.weights.push({d:x.toLocaleDateString('en-CA'),w:150-(6-i)*0.6+(i%2)*0.3})}
-  S.steps[d]=5400;persist();
+  S.steps[d]=5400;S.workouts=[{id:9,d,type:'walk',min:30,kcal:119},{id:8,d:new Date(Date.now()-864e5).toLocaleDateString('en-CA'),type:'dance',min:45,kcal:255},{id:7,d:new Date(Date.now()-3*864e5).toLocaleDateString('en-CA'),type:'yoga',min:20,kcal:57}];persist();
 }
 
 const ring=(v,max,label,sz=150)=>{const r=sz/2-12,C=2*Math.PI*r,p=Math.min(1,max?v/max:0);
@@ -27,17 +27,32 @@ const meals=()=>S.meals[today()]||(S.meals[today()]=[]);
 const tot=()=>meals().reduce((a,m)=>({kcal:a.kcal+m.kcal,p:a.p+m.p,c:a.c+m.c,f:a.f+m.f}),{kcal:0,p:0,c:0,f:0});
 const macros=t=>`<div class="macros"><div><b>${Math.round(t.p)}g</b>Protein</div><div><b>${Math.round(t.c)}g</b>Carbs</div><div><b>${Math.round(t.f)}g</b>Fat</div></div>`;
 
+// MET values (Compendium of Physical Activities, approx.)
+const MET={walk:3.5,run:9.8,bike:7.5,dance:5,gym:5,yoga:2.5,sports:7,other:4};
+const exToday=()=>(S.workouts||[]).filter(w=>w.d===today()).reduce((a,w)=>a+w.min,0);
 const views={
+ exercise(){const st=S.steps[today()]||0,wk=(S.workouts||[]);
+  const days=[...Array(7)].map((_,i)=>{const x=new Date();x.setDate(x.getDate()-6+i);const d=x.toLocaleDateString('en-CA');return {l:x.toLocaleDateString(undefined,{weekday:'narrow'}),m:wk.filter(w=>w.d===d).reduce((a,w)=>a+w.min,0)}});
+  const mx=Math.max(30,...days.map(d=>d.m)),tw=wk.filter(w=>w.d===today());
+  return `<h2>Exercise</h2><p class="sub">Every bit of movement counts.</p>
+  <div class="card"><h3>👟 Steps</h3><div class="row">${ring(st,S.stepGoal,`of ${S.stepGoal.toLocaleString()}`,110)}<div class="grow">
+   <label>Steps today</label><input id="st" type="number" inputmode="numeric" value="${st||''}" placeholder="e.g. 6000">
+   <button class="btn sm" id="stsave" style="margin-top:8px">Save</button></div></div>
+   <p class="sub">${st>=S.stepGoal?'Goal reached — nice work! 🎉':`${(S.stepGoal-st).toLocaleString()} to go. A 10-minute walk is about 1,000.`}</p>
+   <p class="note">Steps will count automatically in the phone app.</p></div>
+  <div class="card"><h3>🏃 Log a workout</h3><div class="grid2"><select id="ext">${Object.keys(MET).map(k=>`<option value="${k}">${k[0].toUpperCase()+k.slice(1)}</option>`).join('')}</select>
+   <input id="exm" type="number" inputmode="numeric" placeholder="Minutes"></div><button class="btn" id="exsave">Add workout</button>
+   ${tw.map(w=>`<div class="item"><span>${w.type[0].toUpperCase()+w.type.slice(1)} · ${w.min} min</span><span class="sub">~${w.kcal} kcal <button class="x" data-exdel="${w.id}">✕</button></span></div>`).join('')}</div>
+  <div class="card"><h3>This week</h3><svg viewBox="0 0 280 120" width="100%">${days.map((d,i)=>{const h=d.m/mx*70;return `<rect x="${i*40+8}" y="${92-h}" width="24" height="${Math.max(h,2)}" rx="6" fill="var(--sage-deep)"/><text x="${i*40+20}" y="${86-h}" text-anchor="middle" font-size="10" fill="var(--muted)">${d.m||''}</text><text x="${i*40+20}" y="110" text-anchor="middle" font-size="11" fill="var(--charcoal)">${d.l}</text>`}).join('')}</svg>
+   <p class="sub">${days.reduce((a,d)=>a+d.m,0)} active minutes this week</p></div>
+  <p class="note">Exercise calories are estimates and don't change your daily limit. Move for fun and energy! 💚</p>`},
  home(){const P=plan(S.profile),t=tot(),st=S.steps[today()]||0,lw=S.weights.at(-1);
   return `<h2>Hi, ${esc(S.name||'there')}!</h2><p class="sub">Small steps, every day. You've got this.</p>
   <div class="card limit"><p class="sub">Your daily limit</p><div class="big">${P.target.toLocaleString()} cal <span class="sub">to stay on track</span></div>
   ${ring(t.kcal,P.target,`eaten of ${P.target.toLocaleString()}`)}
   <div class="row between" style="margin:8px 0 12px"><span>Eaten <b>${t.kcal.toLocaleString()}</b></span><span>${t.kcal<=P.target?`<b>${(P.target-t.kcal).toLocaleString()}</b> left`:'<b>A bit over today</b>'}</span></div>
   ${t.kcal>P.target?'<p class="note">A bit over today, tomorrow\'s a fresh start. 🌱</p>':''}${macros(t)}</div>
-  <div class="card"><h3>👟 Steps</h3><div class="row">${ring(st,S.stepGoal,`of ${S.stepGoal}`,110)}<div class="grow">
-   <label>Steps today</label><input id="st" type="number" inputmode="numeric" value="${st||''}" placeholder="e.g. 6000">
-   <button class="btn sm" id="stsave" style="margin-top:8px">Save</button></div></div>
-   <p class="sub">${st>=S.stepGoal?'Goal reached — nice work! 🎉':`${(S.stepGoal-st).toLocaleString()} to go. A 10-minute walk is about 1,000.`}</p></div>
+  <div class="card row between"><div><h3>👟 Steps</h3><span class="sub">${st.toLocaleString()} of ${S.stepGoal.toLocaleString()} · ${exToday()} active min</span></div><button class="btn sm ghost" data-go="exercise">Open</button></div>
   <div class="card row between"><div><h3>📈 Progress</h3><span class="sub">${lw?`${lw.w.toFixed(1)} lb → goal ${S.profile.goal} lb`:'Log your first weigh-in'}</span></div><button class="btn sm ghost" data-go="progress">Open</button></div>
   ${P.teen?'<p class="note warn">Because you\'re under 18, your target stays gentle and focuses on habits. Please talk to a doctor or parent before changing your diet.</p>':''}`},
  snap(){return `<h2>Snap a meal</h2><p class="sub">Take a photo and we'll estimate it.</p>
@@ -98,14 +113,16 @@ function go(t){location.hash=t;
  document.querySelectorAll('.tabs a').forEach(a=>a.classList.toggle('on',a.dataset.t===t));V.innerHTML=views[t]();window.scrollTo(0,0);
  if(t==='snap'&&new URLSearchParams(location.search).has('demo'))analyze(null);}
 
-document.addEventListener('click',e=>{if(e.target.closest('.survey'))return;const el=e.target.closest('#resurvey,[data-t],[data-go],[data-del],[data-edit],#addm,#stsave,#wsave,[data-food]');if(!el)return;
+document.addEventListener('click',e=>{if(e.target.closest('.survey'))return;const el=e.target.closest('#resurvey,[data-t],[data-go],[data-del],[data-edit],#addm,#stsave,#wsave,[data-food],#exsave,[data-exdel]');if(!el)return;
  if(el.id==='resurvey'){runSurvey(S,()=>{persist();go('home')});return}
  if(el.dataset.t||el.dataset.go)return go(el.dataset.t||el.dataset.go);
  if(el.dataset.del){S.meals[today()]=meals().filter(m=>m.id!=el.dataset.del);persist();return go('log')}
  if(el.dataset.edit){const m=meals().find(m=>m.id==el.dataset.edit);const v=prompt('Calories for '+m.name,m.kcal);if(v&&+v>0){const k=+v/m.kcal;Object.assign(m,{kcal:Math.round(+v),p:Math.round(m.p*k),c:Math.round(m.c*k),f:Math.round(m.f*k)});persist()}return go('log')}
  if(el.dataset.food){const f=FOODS[+el.dataset.food];photoURL=null;$('#res').innerHTML=resultCard({items:[{name:f.name}],kcalLow:Math.round(f.kcal*.9),kcalHigh:Math.round(f.kcal*1.1),p:f.p,c:f.c,f:f.f,confidence:0.9,provider:'list'},null);$('#res').scrollIntoView({behavior:'smooth'});return}
  if(el.id==='addm'){const k=+$('#por').value,r=pending;meals().push({id:Date.now(),name:r.items.map(i=>i.name).join(' + '),kcal:Math.round((r.kcalLow+r.kcalHigh)/2*k),p:Math.round(r.p*k),c:Math.round(r.c*k),f:Math.round(r.f*k),t:$('#mt').value});persist();return go('log')}
- if(el.id==='stsave'){steps.setSteps(today(),+$('#st').value);return go('home')}
+ if(el.id==='stsave'){steps.setSteps(today(),+$('#st').value);return go('exercise')}
+ if(el.id==='exsave'){const m=+$('#exm').value;if(m>0&&m<600){const ty=$('#ext').value,kg=S.profile.weight*0.453592;(S.workouts||(S.workouts=[])).push({id:Date.now(),d:today(),type:ty,min:m,kcal:Math.round(MET[ty]*kg*m/60)});persist()}return go('exercise')}
+ if(el.dataset.exdel){S.workouts=S.workouts.filter(w=>w.id!=el.dataset.exdel);persist();return go('exercise')}
  if(el.id==='wsave'){const w=+$('#w').value;if(w>50&&w<700){S.weights=S.weights.filter(x=>x.d!==today());S.weights.push({d:today(),w});S.weights.sort((a,b)=>a.d<b.d?-1:1);persist()}return go('progress')}
 });
 document.addEventListener('input',e=>{if(e.target.id==='por')scaleResult();
