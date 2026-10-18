@@ -2,9 +2,20 @@
 import {plan,goalDate,minHealthyWeight} from './calc.js?v=2';
 const KG=0.453592;
 const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+export const WORKOUT_OPTS=[
+ ['walk','Walking (steps)',''],
+ ['run','Running',''],
+ ['cardio','Cardio','Cycling, dance, HIIT'],
+ ['gym','Weight training',''],
+ ['yoga','Yoga / Pilates',''],
+ ['swim','Swimming',''],
+ ['sports','Sports',''],
+ ['home','Home workouts',''],
+];
+export const workoutLabel=k=>(WORKOUT_OPTS.find(([v])=>v===k)||[k,k[0].toUpperCase()+k.slice(1)])[1];
 export function runSurvey(S,done){
  const a={name:S.name||'',unit:S.unit||'lb',age:S.profile?.age||'',weight:S.profile?.weight||'',lose:S.profile?Math.max(0,+(S.profile.weight-S.profile.goal).toFixed(1)):'',
-  sex:S.profile?.sex||'',height:S.profile?.height||'',activity:S.profile?.activity||'',pace:S.profile?.pace||0.5,mainGoal:S.mainGoal||'',prefs:S.prefs||[],stepGoal:S.stepGoal||8000};
+  sex:S.profile?.sex||'',height:S.profile?.height||'',activity:S.profile?.activity||'',pace:S.profile?.pace||0.5,mainGoal:S.mainGoal||'',prefs:S.prefs||[],stepGoal:S.stepGoal||8000,workoutTypes:S.workoutTypes?S.workoutTypes.slice():[]};
  const box=document.createElement('div');box.className='survey';document.body.appendChild(box);
  const toU=lb=>a.unit==='kg'?+(lb*KG).toFixed(1):+(+lb).toFixed(1), fromU=v=>a.unit==='kg'?v/KG:v;
  const unitT=()=>`<div class="seg">${['lb','kg'].map(u=>`<button type="button" data-unit="${u}" class="${a.unit===u?'on':''}">${u}</button>`).join('')}</div>`;
@@ -25,8 +36,10 @@ export function runSurvey(S,done){
   {q:"What's your main goal?",h:()=>tap('mainGoal',[['healthier','Feel healthier'],['lose','Lose weight'],['habits','Build habits'],['energy','More energy']]),r:()=>a.mainGoal?null:'Pick one to continue.'},
   {q:'Any food preferences?',sub:'Swaps will respect these. Pick all that apply.',h:()=>tap('prefs',[['none','None'],['veg','Vegetarian'],['vegan','Vegan'],['halal','Halal'],['dairy','No dairy'],['gluten','No gluten'],['nut','Nut allergy']],true),r:()=>null},
   {q:'Daily step goal',h:()=>tap('stepGoal',[[5000,'5,000','Easy start'],[8000,'8,000','Balanced'],[10000,'10,000','Go-getter']]),r:()=>null},
-  {q:'Your plan',h:()=>{const p=prof(),P=plan(p),gd=goalDate(p.weight,p.goal,P.weekly);return `${note?`<p class="note warn">${note}</p>`:''}
-    <div class="card"><p class="sub">Daily target</p><div class="big">${P.target} kcal</div><p class="sub">Goal: ${toU(p.goal)} ${a.unit}${gd?` · around ${gd.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}`:''}</p></div>
+  {q:'What types of workouts do you want to do?',sub:'Pick all that apply — we\'ll put these first when you log exercise.',h:()=>tap('workoutTypes',WORKOUT_OPTS,true),r:()=>a.workoutTypes.length?null:'Pick at least one to continue.'},
+  {q:'Your plan',h:()=>{const p=prof(),P=plan(p),gd=goalDate(p.weight,p.goal,P.weekly);const wts=a.workoutTypes.map(workoutLabel).join(' · ');return `${note?`<p class="note warn">${note}</p>`:''}
+    <div class="card"><p class="sub">Daily target</p><div class="big">${P.target} kcal</div><p class="sub">Goal: ${toU(p.goal)} ${a.unit}${gd?` · around ${gd.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}`:''}</p>
+    ${wts?`<p class="sub" style="margin-top:8px">Workouts: ${esc(wts)}</p>`:''}</div>
     ${P.teen?'<p class="note warn">Because you\'re under 18, we keep your target gentle and focus on habits. Please talk to a doctor or parent before changing your diet.</p>':''}
     <p class="note">Estimates only, not medical advice.</p>`},r:()=>null,last:true},
  ];
@@ -40,10 +53,10 @@ export function runSurvey(S,done){
  box.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
   if(b.dataset.unit){a.unit=b.dataset.unit;return draw()}
   if(b.dataset.back!==undefined){i--;return draw()}
-  if(b.dataset.k){const k=b.dataset.k,v=b.dataset.v;if(b.hasAttribute('data-multi')){a[k]=v==='none'?[]:a[k].includes(v)?a[k].filter(x=>x!==v):[...a[k],v]}else a[k]=k==='pace'||k==='stepGoal'?+v:v;
+  if(b.dataset.k){const k=b.dataset.k,v=b.dataset.v;if(b.hasAttribute('data-multi')){a[k]=v==='none'?[]:a[k].includes(v)?a[k].filter(x=>x!==v):[...a[k].filter(x=>x!=='none'),v]}else a[k]=k==='pace'||k==='stepGoal'?+v:v;
    if(!b.hasAttribute('data-multi')&&steps[i].r()===null&&!steps[i].last){i++;}return draw()}});
  box.addEventListener('submit',e=>{e.preventDefault();const err=steps[i].r();if(err)return draw(err);
-  if(steps[i].last){Object.assign(S,{name:a.name,unit:a.unit,mainGoal:a.mainGoal,prefs:a.prefs,stepGoal:a.stepGoal,profile:prof()});box.remove();return done()}
+  if(steps[i].last){Object.assign(S,{name:a.name,unit:a.unit,mainGoal:a.mainGoal,prefs:a.prefs,stepGoal:a.stepGoal,workoutTypes:a.workoutTypes,profile:prof()});box.remove();return done()}
   i++;draw()});
  draw();
  return {jump:n=>{i=n;draw()}};

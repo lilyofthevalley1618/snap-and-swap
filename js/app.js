@@ -1,9 +1,9 @@
-import {load,save,today} from './store.js?v=2';
+import {load,save,today} from './store.js?v=3';
 import {plan,validate,goalDate,minHealthyWeight} from './calc.js?v=2';
 import {ai} from './ai.js?v=2';
 import {FOODS,swapFor} from './foods.js?v=2';
 import {ManualStepsSource} from './steps.js?v=2';
-import {runSurvey} from './survey.js?v=2';
+import {runSurvey,WORKOUT_OPTS} from './survey.js?v=3';
 
 const S=load(); const persist=()=>save(S); const steps=new ManualStepsSource(S,save);
 const $=s=>document.querySelector(s), V=$('#view');
@@ -12,7 +12,7 @@ const DISC='<p class="note">Snap &amp; Swap gives estimates, not medical advice.
 let pending=null; // current snap analysis
 
 if(new URLSearchParams(location.search).has('demo')&&!S.profile){
-  S.name='Lily';S.profile={age:16,sex:'female',height:64,weight:150,goal:135,activity:'moderate',pace:0.5};
+  S.name='Lily';S.profile={age:16,sex:'female',height:64,weight:150,goal:135,activity:'moderate',pace:0.5};S.workoutTypes=['walk','run','yoga'];
   const d=today();S.meals[d]=[{id:1,name:'Oatmeal + banana',kcal:270,p:7,c:55,f:4,t:'Breakfast'},{id:2,name:'Cheeseburger + French fries (medium)',kcal:900,p:32,c:88,f:46,t:'Lunch'}];
   for(let i=6;i>=0;i--){const x=new Date();x.setDate(x.getDate()-i*5);S.weights.push({d:x.toLocaleDateString('en-CA'),w:150-(6-i)*0.6+(i%2)*0.3})}
   S.steps[d]=5400;S.workouts=[{id:9,d,type:'walk',min:30,kcal:119},{id:8,d:new Date(Date.now()-864e5).toLocaleDateString('en-CA'),type:'dance',min:45,kcal:255},{id:7,d:new Date(Date.now()-3*864e5).toLocaleDateString('en-CA'),type:'yoga',min:20,kcal:57}];persist();
@@ -27,8 +27,26 @@ const meals=()=>S.meals[today()]||(S.meals[today()]=[]);
 const tot=()=>meals().reduce((a,m)=>({kcal:a.kcal+m.kcal,p:a.p+m.p,c:a.c+m.c,f:a.f+m.f}),{kcal:0,p:0,c:0,f:0});
 const macros=t=>`<div class="macros"><div><b>${Math.round(t.p)}g</b>Protein</div><div><b>${Math.round(t.c)}g</b>Carbs</div><div><b>${Math.round(t.f)}g</b>Fat</div></div>`;
 
-// MET values (Compendium of Physical Activities, approx.)
-const MET={walk:3.5,run:9.8,bike:7.5,dance:5,gym:5,yoga:2.5,sports:7,other:4};
+// Log types + moderate Compendium METs. kcal = MET × kg × hours.
+const LOG=[
+ ['walk','Walking',3.5],['run','Running',9.8],['swim','Swimming',6.0],['cycle','Cycling',6.8],
+ ['hike','Hiking',5.3],['yoga','Yoga',2.5],['pilates','Pilates',3.0],['dance','Dance',5.5],
+ ['strength','Strength training',5.0],['hiit','HIIT',8.0],['jumprope','Jump rope',8.8],
+ ['tennis','Tennis',7.3],['basketball','Basketball',6.5],['soccer','Soccer',7.0],
+ ['rowing','Rowing',6.0],['elliptical','Elliptical',5.0],['stairs','Stair climber',9.0],
+ ['skate','Skating',7.0],['martial','Martial arts',5.3],['other','Other',5.0],
+];
+const MET=Object.fromEntries(LOG.map(([k,,m])=>[k,m]));
+const logLabel=k=>(LOG.find(([v])=>v===k)||[k,k])[1];
+// Survey chips → matching log type keys (preferred first).
+const SURVEY_TO_LOG={walk:['walk'],run:['run'],cardio:['cycle','dance','hiit'],gym:['strength'],
+ yoga:['yoga','pilates'],swim:['swim'],sports:['tennis','basketball','soccer','skate','martial'],
+ home:['strength','hiit','jumprope','dance','other']};
+const metOrder=()=>{const seen=new Set(),out=[];
+ for(const s of S.workoutTypes||[])for(const k of SURVEY_TO_LOG[s]||[])if(k in MET&&!seen.has(k)){seen.add(k);out.push(k)}
+ for(const [k] of LOG)if(!seen.has(k))out.push(k);
+ return out};
+const exName=w=>w.type==='other'&&w.name?w.name:logLabel(w.type);
 const exToday=()=>(S.workouts||[]).filter(w=>w.d===today()).reduce((a,w)=>a+w.min,0);
 const views={
  exercise(){const st=S.steps[today()]||0,wk=(S.workouts||[]);
@@ -40,9 +58,11 @@ const views={
    <button class="btn sm" id="stsave" style="margin-top:8px">Save</button></div></div>
    <p class="sub">${st>=S.stepGoal?'Goal reached — nice work! 🎉':`${(S.stepGoal-st).toLocaleString()} to go. A 10-minute walk is about 1,000.`}</p>
    <p class="note">Steps will count automatically in the phone app.</p></div>
-  <div class="card"><h3>🏃 Log a workout</h3><div class="grid2"><select id="ext">${Object.keys(MET).map(k=>`<option value="${k}">${k[0].toUpperCase()+k.slice(1)}</option>`).join('')}</select>
-   <input id="exm" type="number" inputmode="numeric" placeholder="Minutes"></div><button class="btn" id="exsave">Add workout</button>
-   ${tw.map(w=>`<div class="item"><span>${w.type[0].toUpperCase()+w.type.slice(1)} · ${w.min} min</span><span class="sub">~${w.kcal} kcal <button class="x" data-exdel="${w.id}">✕</button></span></div>`).join('')}</div>
+  <div class="card"><h3>🏃 Log a workout</h3><div class="grid2"><select id="ext">${metOrder().map(k=>`<option value="${k}">${logLabel(k)}</option>`).join('')}</select>
+   <input id="exm" type="number" inputmode="numeric" placeholder="Minutes"></div>
+   <input id="exn" type="text" placeholder="What did you do?" hidden style="margin-top:8px">
+   <button class="btn" id="exsave">Add workout</button>
+   ${tw.map(w=>`<div class="item"><span>${esc(exName(w))} · ${w.min} min</span><span class="sub">~${w.kcal} kcal <button class="x" data-exdel="${w.id}">✕</button></span></div>`).join('')}</div>
   <div class="card"><h3>This week</h3><svg viewBox="0 0 280 120" width="100%">${days.map((d,i)=>{const h=d.m/mx*70;return `<rect x="${i*40+8}" y="${92-h}" width="24" height="${Math.max(h,2)}" rx="6" fill="var(--sage-deep)"/><text x="${i*40+20}" y="${86-h}" text-anchor="middle" font-size="10" fill="var(--muted)">${d.m||''}</text><text x="${i*40+20}" y="110" text-anchor="middle" font-size="11" fill="var(--charcoal)">${d.l}</text>`}).join('')}</svg>
    <p class="sub">${days.reduce((a,d)=>a+d.m,0)} active minutes this week</p></div>
   <p class="note">Exercise calories are estimates and don't change your daily limit. Move for fun and energy! 💚</p>`},
@@ -85,6 +105,8 @@ const views={
   <div><label>Pace</label><select name="pace">${o(0.5,'0.5 lb/week',p.pace)}${o(1,'1 lb/week',p.pace)}</select></div></div>
   <label>Activity</label><select name="activity">${o('sedentary','Mostly sitting',p.activity)}${o('light','Lightly active',p.activity)}${o('moderate','Active most days',p.activity)}${o('active','Very active',p.activity)}</select>
   <label>Daily step goal</label><input name="stepGoal" type="number" value="${S.stepGoal}">
+  <label>Workouts you want to do</label><p class="sub">Check all that apply</p>
+  <div class="opts">${WORKOUT_OPTS.map(([v,l,s])=>{const on=(S.workoutTypes||[]).includes(v);return `<label class="opt ${on?'on':''}" style="display:block;cursor:pointer"><input type="checkbox" name="wt" value="${v}" ${on?'checked':''} style="width:auto;min-height:0;margin-right:8px;accent-color:var(--sage-deep)"><b>${l}</b>${s?`<span>${s}</span>`:''}</label>`}).join('')}</div>
   <p id="err" class="note warn" hidden></p><button class="btn">Save</button><button type="button" class="btn ghost" id="resurvey">Edit name, goals &amp; food preferences</button></form>${DISC}`}
 };
 function chart(ws,goal){if(!ws.length)return '<p class="sub">Log weigh-ins to see your chart.</p>';
@@ -121,16 +143,17 @@ document.addEventListener('click',e=>{if(e.target.closest('.survey'))return;cons
  if(el.dataset.food){const f=FOODS[+el.dataset.food];photoURL=null;$('#res').innerHTML=resultCard({items:[{name:f.name}],kcalLow:Math.round(f.kcal*.9),kcalHigh:Math.round(f.kcal*1.1),p:f.p,c:f.c,f:f.f,confidence:0.9,provider:'list'},null);$('#res').scrollIntoView({behavior:'smooth'});return}
  if(el.id==='addm'){const k=+$('#por').value,r=pending;meals().push({id:Date.now(),name:r.items.map(i=>i.name).join(' + '),kcal:Math.round((r.kcalLow+r.kcalHigh)/2*k),p:Math.round(r.p*k),c:Math.round(r.c*k),f:Math.round(r.f*k),t:$('#mt').value});persist();return go('log')}
  if(el.id==='stsave'){steps.setSteps(today(),+$('#st').value);return go('exercise')}
- if(el.id==='exsave'){const m=+$('#exm').value;if(m>0&&m<600){const ty=$('#ext').value,kg=S.profile.weight*0.453592;(S.workouts||(S.workouts=[])).push({id:Date.now(),d:today(),type:ty,min:m,kcal:Math.round(MET[ty]*kg*m/60)});persist()}return go('exercise')}
+ if(el.id==='exsave'){const m=+$('#exm').value;if(m>0&&m<600){const ty=$('#ext').value,kg=S.profile.weight*0.453592,met=MET[ty]||5,name=ty==='other'?($('#exn')?.value||'').trim():'';if(ty==='other'&&!name)return go('exercise');const w={id:Date.now(),d:today(),type:ty,min:m,kcal:Math.round(met*kg*(m/60))};if(name)w.name=name;(S.workouts||(S.workouts=[])).push(w);persist()}return go('exercise')}
  if(el.dataset.exdel){S.workouts=S.workouts.filter(w=>w.id!=el.dataset.exdel);persist();return go('exercise')}
  if(el.id==='wsave'){const w=+$('#w').value;if(w>50&&w<700){S.weights=S.weights.filter(x=>x.d!==today());S.weights.push({d:today(),w});S.weights.sort((a,b)=>a.d<b.d?-1:1);persist()}return go('progress')}
 });
 document.addEventListener('input',e=>{if(e.target.id==='por')scaleResult();
  if(e.target.id==='q'){const q=e.target.value.toLowerCase().trim();$('#ql').innerHTML=q?FOODS.map((f,i)=>[f,i]).filter(([f])=>f.name.toLowerCase().includes(q)).slice(0,8).map(([f,i])=>`<div class="item" data-food="${i}" style="cursor:pointer"><span>${f.name}</span><span class="sub">${f.kcal} kcal</span></div>`).join('')||'<p class="sub">No match — try a simpler word.</p>':''}});
-document.addEventListener('change',e=>{if(e.target.id==='ph'&&e.target.files[0]){const f=e.target.files[0];photoURL=URL.createObjectURL(f);analyze(f)}});
+document.addEventListener('change',e=>{if(e.target.id==='ph'&&e.target.files[0]){const f=e.target.files[0];photoURL=URL.createObjectURL(f);analyze(f)}if(e.target.name==='wt'){e.target.closest('.opt')?.classList.toggle('on',e.target.checked)}
+ if(e.target.id==='ext'){const o=e.target.value==='other',n=$('#exn');if(n){n.hidden=!o;if(o)n.focus()}}});
 document.addEventListener('submit',e=>{if(e.target.closest('.survey'))return;e.preventDefault();const fd=Object.fromEntries(new FormData(e.target));
  const p={age:+fd.age,sex:fd.sex,height:+fd.height,weight:+fd.weight,goal:+fd.goal,activity:fd.activity,pace:+fd.pace};
  const err=validate(p);if(err){$('#err').hidden=false;$('#err').textContent=err;return}
- S.profile=p;S.stepGoal=Math.max(1000,+fd.stepGoal||8000);if(!S.weights.length)S.weights.push({d:today(),w:p.weight});persist();go('home')});
+ S.profile=p;S.stepGoal=Math.max(1000,+fd.stepGoal||8000);S.workoutTypes=[...e.target.querySelectorAll('input[name=wt]:checked')].map(x=>x.value);if(!S.weights.length)S.weights.push({d:today(),w:p.weight});persist();go('home')});
 const start=()=>go(location.hash.slice(1)in views?location.hash.slice(1):'home');
 if(!S.profile){const sv=runSurvey(S,()=>{if(!S.weights.length)S.weights.push({d:today(),w:S.profile.weight});persist();go('home')});const n=new URLSearchParams(location.search).get('survey');if(n)sv.jump(+n)}else start();
