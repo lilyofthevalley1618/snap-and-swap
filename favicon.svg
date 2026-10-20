@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Snap and Swap">
+ <rect width="512" height="512" rx="114" fill="#FAF6EE"/>
+ <path d="M256 420 V250" fill="none" stroke="#5B2A4E" stroke-width="28" stroke-linecap="round"/>
+ <path d="M256 255 C145 245,115 155,155 105 C205 70,250 115,256 165 Z" fill="#B4C0A8"/><path d="M256 165 C262 115,307 70,357 105 C397 155,367 245,256 255 Z" fill="#EDB8C6"/>
+ <path d="M256 255 C145 245,115 155,155 105 C205 70,250 115,256 165 Z M256 165 C262 115,307 70,357 105 C397 155,367 245,256 255 Z" fill="none" stroke="#5B2A4E" stroke-width="12" stroke-linejoin="round"/>
+ <circle cx="226" cy="178" r="16" fill="#2F3133"/><circle cx="286" cy="178" r="16" fill="#2F3133"/>
+ <path d="M234 212 q22 18 44 0" fill="none" stroke="#2F3133" stroke-width="14" stroke-linecap="round"/>
+</svg>

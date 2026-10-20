@@ -1,0 +1,16 @@
+{
+  "_note": "Wikimedia Commons photos for a rough vision check. Downloaded by run.mjs into photos/ (git-ignored). ref_kcal assumes the stated portion; 'ambiguous' means the photo doesn't show a clear single portion.",
+  "photos": [
+    {"file":"Banana-Single.jpg","license":"CC BY-SA 3.0","author":"Evan-Amos","food":"banana","ref_grams":118,"ref_kcal":105},
+    {"file":"Red_Apple.jpg","license":"CC BY 2.0","author":"see Commons page","food":"apple","ref_grams":182,"ref_kcal":95},
+    {"file":"Fried_egg,_sunny_side_up.jpg","license":"Public domain","author":"see Commons page","food":"fried egg","ref_grams":46,"ref_kcal":90},
+    {"file":"Croissant-Petr_Kratochvil.jpg","license":"CC0","author":"Petr Kratochvil","food":"croissant","ref_grams":57,"ref_kcal":231},
+    {"file":"Glazed-Donut.jpg","license":"Public domain","author":"see Commons page","food":"glazed donut","ref_grams":60,"ref_kcal":242},
+    {"file":"Hard_boiled_egg.jpg","license":"CC BY 2.0","author":"see Commons page","food":"hard boiled egg","ref_grams":50,"ref_kcal":78},
+    {"file":"Big_Mac_hamburger.jpg","license":"CC0","author":"Evan-Amos","food":"Big Mac","ref_kcal":590,"branded":true},
+    {"file":"Avocado_with_cross_section_edit.jpg","license":"GFDL","author":"see Commons page","food":"avocado","ambiguous":true},
+    {"file":"Orange-Whole-&-Split.jpg","license":"CC BY-SA","author":"see Commons page","food":"orange","ambiguous":true},
+    {"file":"Broccoli_and_cross_section_edit.jpg","license":"GFDL","author":"see Commons page","food":"broccoli","ambiguous":true},
+    {"file":"Strawberries.jpg","license":"Public domain","author":"see Commons page","food":"strawberries","ambiguous":true}
+  ]
+}

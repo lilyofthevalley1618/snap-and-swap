@@ -1,0 +1,621 @@
+# Name|FNDDS query (blank = name)|aliases
+Egg, boiled|egg whole boiled|boiled egg,hard boiled egg,hard-boiled egg,soft boiled egg,eggs,egg
+Egg, fried|egg whole fried|fried egg,sunny side up,over easy
+Egg, scrambled|egg whole scrambled|scrambled eggs,scrambled egg
+Egg, poached|egg whole boiled or poached|poached egg
+Omelet, plain|egg omelet or scrambled egg made with|omelette,omelet
+Egg whites|egg white cooked|egg white
+Deviled egg|egg deviled|deviled eggs
+Egg sandwich|egg cheese sandwich|breakfast sandwich,egg and cheese sandwich
+Bacon|pork bacon cooked|bacon strips
+Turkey bacon|turkey bacon cooked|
+Sausage, breakfast|pork sausage|breakfast sausage,sausage links
+Ham|ham sliced|deli ham
+Pancakes|pancakes plain|pancake,hotcakes
+Waffles|waffle plain|waffle
+French toast|french toast plain|
+Oatmeal|oatmeal cooked|oats,porridge
+Granola|granola|
+Cereal, corn flakes|corn flakes|cornflakes
+Cereal, Cheerios|cheerios|
+Cereal, frosted flakes|frosted flakes|
+Cereal, Froot Loops|froot loops|
+Grits|grits cooked|
+Bagel, plain|bagel plain|bagel
+Bagel with cream cheese|bagel cream cheese|
+English muffin|english muffin plain|
+Croissant|croissant|
+Muffin, blueberry|muffin blueberry|blueberry muffin
+Muffin, chocolate chip|muffin chocolate chip|
+Biscuit|biscuit baking powder|biscuits
+Toast, white|bread white toasted|white toast,toast
+Toast, whole wheat|bread whole wheat toasted|wheat toast
+Bread, white|bread white|white bread
+Bread, whole wheat|bread whole wheat|wheat bread,brown bread
+Bread, sourdough|bread sourdough|sourdough
+Bread, rye|bread rye|rye bread
+Bread, multigrain|bread multigrain|multigrain bread
+Garlic bread|garlic bread|
+Dinner roll|roll white soft|roll,bun
+Hamburger bun|roll hamburger|burger bun
+Hot dog bun|roll hot dog|
+Pita bread|pita white|pita
+Naan|naan|nan bread
+Tortilla, flour|tortilla flour|flour tortilla
+Tortilla, corn|tortilla corn|corn tortilla
+Cornbread|cornbread|corn bread
+Butter|butter stick|
+Margarine|margarine stick|
+Cream cheese|cream cheese regular|
+Peanut butter|peanut butter|pb
+Almond butter|almond butter|
+Nutella|chocolate hazelnut spread|hazelnut spread
+Jam|jelly all flavors|jelly,jam,preserves
+Honey|honey|
+Maple syrup|syrup maple|syrup,pancake syrup
+Avocado toast|avocado toast|
+Milk, whole|milk whole|whole milk,milk
+Milk, 2%|milk reduced fat 2%|2% milk,reduced fat milk
+Milk, skim|milk nonfat|skim milk,nonfat milk
+Milk, chocolate|milk chocolate whole|chocolate milk
+Almond milk|almond milk sweetened|
+Oat milk|oat milk|
+Soy milk|soy milk|soymilk
+Yogurt, plain|yogurt plain whole milk|yogurt,yoghurt
+Yogurt, Greek plain|yogurt greek plain nonfat|greek yogurt,greek yoghurt
+Yogurt, Greek vanilla|yogurt greek vanilla|
+Yogurt, fruit|yogurt fruit low fat|fruit yogurt
+Cottage cheese|cottage cheese|
+Cheese, cheddar|cheese cheddar|cheddar
+Cheese, mozzarella|cheese mozzarella|mozzarella
+Cheese, American|cheese american|american cheese,cheese slice
+Cheese, Swiss|cheese swiss|swiss cheese
+Cheese, parmesan|cheese parmesan|parmesan,parmigiano
+Cheese, feta|cheese feta|feta
+Cheese stick|cheese string|string cheese
+Cream|cream heavy|heavy cream,whipping cream
+Sour cream|sour cream|
+Whipped cream|whipped cream|
+Ice cream, vanilla|ice cream regular vanilla|ice cream,vanilla ice cream
+Ice cream, chocolate|ice cream regular chocolate|chocolate ice cream
+Frozen yogurt|frozen yogurt|froyo
+Milkshake|milkshake|milk shake,shake
+Smoothie, fruit|fruit smoothie|smoothie
+Apple|apple raw|apples,red apple,green apple
+Banana|banana raw|bananas
+Orange|orange raw|oranges
+Mandarin|tangerine raw|clementine,mandarin orange,cutie
+Grapes|grapes raw|grape
+Strawberries|strawberries raw|strawberry
+Blueberries|blueberries raw|blueberry
+Raspberries|raspberries raw|raspberry
+Blackberries|blackberries raw|blackberry
+Watermelon|watermelon raw|
+Cantaloupe|cantaloupe raw|melon
+Honeydew|honeydew raw|
+Pineapple|pineapple raw|
+Mango|mango raw|mangoes
+Papaya|papaya raw|
+Kiwi|kiwi fruit raw|kiwifruit
+Peach|peach raw|peaches
+Nectarine|nectarine raw|
+Pear|pear raw|pears
+Plum|plum raw|plums
+Cherries|cherries raw|cherry
+Apricot|apricot raw|apricots
+Grapefruit|grapefruit raw|
+Lemon|lemon raw|
+Lime|lime raw|
+Pomegranate|pomegranate raw|
+Dragon fruit|dragon fruit|pitaya
+Lychee|lychee raw|litchi
+Coconut|coconut fresh|
+Dates|dates medjool|date
+Raisins|raisins|
+Dried cranberries|cranberries dried|craisins
+Dried mango|mango dried|
+Applesauce|applesauce unsweetened|apple sauce
+Fruit cup|fruit cocktail|fruit salad
+Avocado|avocado raw|avocados,guacamole avocado
+Guacamole|guacamole|guac
+Broccoli|broccoli cooked|
+Broccoli, raw|broccoli raw|
+Carrots|carrots cooked|carrot
+Carrots, raw|carrots raw|baby carrots
+Spinach|spinach cooked|
+Spinach, raw|spinach raw|
+Lettuce|lettuce raw|romaine,iceberg lettuce
+Salad greens|mixed salad greens|greens,mixed greens
+Kale|kale cooked|
+Cucumber|cucumber raw|cucumbers
+Tomato|tomatoes raw|tomatoes
+Cherry tomatoes|tomatoes cherry|
+Bell pepper|pepper sweet green raw|green pepper,red pepper,peppers
+Onion|onions raw|onions
+Mushrooms|mushrooms cooked|mushroom
+Zucchini|zucchini cooked|courgette
+Cauliflower|cauliflower cooked|
+Green beans|green string beans cooked|string beans
+Peas|peas green cooked|green peas
+Corn|corn yellow cooked|sweet corn,corn kernels
+Corn on the cob|corn on the cob|
+Asparagus|asparagus cooked|
+Brussels sprouts|brussels sprouts cooked|
+Cabbage|cabbage green cooked|
+Celery|celery raw|
+Edamame|edamame cooked|soybeans
+Bok choy|bok choy cooked|pak choi
+Eggplant|eggplant cooked|aubergine
+Sweet potato|sweet potato baked|sweet potatoes,yam
+Potato, baked|potato baked peel eaten|baked potato,potato,potatoes
+Mashed potatoes|potato mashed|mashed potato
+French fries|french fries|fries,chips (uk)
+Hash browns|hash brown|hashbrowns
+Tater tots|potato tots|tots
+Potato chips|potato chips plain|chips,crisps
+Tortilla chips|tortilla chips|nachos chips
+Popcorn|popcorn air popped|
+Popcorn, buttered|popcorn movie theater|movie popcorn
+Pretzels|pretzels hard|pretzel
+Crackers|crackers saltine|saltines
+Goldfish crackers|goldfish crackers|goldfish
+Graham crackers|graham crackers|
+Rice cakes|rice cake|
+White rice|rice white cooked|rice,steamed rice
+Brown rice|rice brown cooked|
+Fried rice|fried rice|
+Jasmine rice|rice white cooked|
+Quinoa|quinoa cooked|
+Couscous|couscous|
+Pasta|pasta cooked|noodles,spaghetti plain
+Spaghetti with meat sauce|spaghetti meat sauce|spaghetti bolognese,bolognese
+Spaghetti with marinara|spaghetti tomato sauce|
+Macaroni and cheese|macaroni cheese|mac and cheese,mac n cheese
+Lasagna|lasagna meat|lasagne
+Fettuccine alfredo|fettuccine alfredo|alfredo
+Ravioli|ravioli cheese|
+Pesto pasta|pasta pesto|
+Ramen, instant|ramen noodle soup|instant noodles,ramen,cup noodles
+Pho|pho|
+Lo mein|lo mein|
+Pad thai|pad thai|
+Chow mein|chow mein|
+Udon|udon|
+Soba noodles|soba|
+Sushi roll|sushi roll|sushi,california roll
+Sashimi|sashimi|
+Chicken breast, grilled|chicken breast grilled skin not eaten|grilled chicken,chicken breast,chicken
+Chicken thigh|chicken thigh baked skin not eaten|
+Chicken drumstick|chicken drumstick fried|drumstick
+Chicken wings|chicken wing fried|wings,buffalo wings
+Fried chicken|chicken breast fried coated|
+Chicken nuggets|chicken nuggets|nuggets,chicken tenders
+Chicken tenders|chicken tenders|chicken strips
+Rotisserie chicken|chicken rotisserie|
+Chicken salad|chicken salad|
+Chicken soup|chicken noodle soup|chicken noodle soup
+Chicken curry|chicken curry|
+Chicken teriyaki|chicken teriyaki|teriyaki chicken
+Orange chicken|orange chicken|
+General Tso's chicken|general tso chicken|
+Kung pao chicken|kung pao chicken|
+Chicken tikka masala|chicken tikka masala|tikka masala
+Butter chicken|butter chicken|
+Chicken alfredo|chicken alfredo|
+Chicken parmesan|chicken parmigiana|chicken parm
+Chicken stir fry|chicken stir fry|stir fry
+Turkey, roasted|turkey light meat roasted|turkey
+Ground turkey|ground turkey cooked|
+Deli turkey|turkey sliced|turkey slices
+Beef steak|beef steak broiled|steak,sirloin
+Ground beef|ground beef cooked|hamburger meat,mince
+Roast beef|roast beef|
+Beef stew|beef stew|stew
+Beef jerky|beef jerky|jerky
+Meatballs|meatballs|meatball
+Meatloaf|meatloaf|
+Pot roast|pot roast|
+Ribs|pork spareribs cooked|bbq ribs
+Pork chop|pork chop broiled|
+Pulled pork|pulled pork barbecue|bbq pork
+Pork tenderloin|pork tenderloin|
+Hot dog|hot dog sandwich|hotdog,frankfurter
+Corn dog|corn dog|
+Salami|salami|
+Pepperoni|pepperoni|
+Lamb|lamb cooked|
+Salmon|salmon baked|salmon fillet
+Tuna, canned|tuna canned water|tuna
+Tuna salad|tuna salad|
+Shrimp|shrimp cooked|prawns
+Fried shrimp|shrimp breaded fried|
+Cod|cod baked|white fish
+Tilapia|tilapia baked|
+Fish sticks|fish sticks|fish fingers
+Fish and chips|fish breaded fried|
+Crab|crab cooked|
+Lobster|lobster cooked|
+Tofu|tofu|bean curd
+Fried tofu|tofu fried|
+Tempeh|tempeh|
+Black beans|black beans cooked|
+Pinto beans|pinto beans cooked|
+Kidney beans|kidney beans cooked|
+Chickpeas|chickpeas cooked|garbanzo beans
+Lentils|lentils cooked|lentil
+Refried beans|refried beans|
+Baked beans|baked beans|
+Hummus|hummus|houmous
+Falafel|falafel|
+Veggie burger|veggie burger|black bean burger,plant burger
+Hamburger|hamburger plain on bun|burger
+Cheeseburger|cheeseburger plain on bun|
+Double cheeseburger|double cheeseburger|
+Big Mac|cheeseburger 2 medium patties|
+Chicken sandwich|chicken fillet sandwich|chicken burger
+Fish sandwich|fish sandwich|
+Turkey sandwich|turkey sandwich|
+Ham sandwich|ham sandwich|
+Grilled cheese|grilled cheese sandwich|grilled cheese sandwich
+BLT|bacon lettuce tomato sandwich|blt sandwich
+PB&J|peanut butter jelly sandwich|pbj,peanut butter and jelly
+Sub sandwich|submarine sandwich cold cut|sub,hoagie
+Club sandwich|club sandwich|
+Tuna sandwich|tuna salad sandwich|
+Egg salad sandwich|egg salad sandwich|
+Philly cheesesteak|cheesesteak|cheese steak
+Quesadilla|quesadilla cheese|cheese quesadilla
+Chicken quesadilla|quesadilla chicken|
+Burrito|burrito beef beans|
+Chicken burrito|burrito chicken|
+Bean burrito|burrito bean|
+Breakfast burrito|burrito egg|
+Taco|taco beef|tacos
+Chicken taco|taco chicken|
+Fish taco|taco fish|
+Nachos|nachos cheese|
+Enchilada|enchilada|enchiladas
+Tamale|tamale|tamales
+Fajitas|fajita chicken|fajita
+Burrito bowl|burrito bowl|
+Taco salad|taco salad|
+Chips and salsa|salsa|salsa
+Pizza, cheese|pizza cheese medium crust|pizza,cheese pizza,pizza slice
+Pizza, pepperoni|pizza pepperoni medium crust|pepperoni pizza
+Pizza, veggie|pizza vegetables|veggie pizza
+Pizza, supreme|pizza meat vegetables|supreme pizza
+Calzone|calzone|
+Pizza rolls|pizza rolls|
+Garden salad|lettuce salad assorted vegetables|salad,side salad,green salad
+Caesar salad|caesar salad|
+Chicken Caesar salad|caesar salad chicken|
+Cobb salad|cobb salad|
+Greek salad|greek salad|
+Potato salad|potato salad|
+Pasta salad|pasta salad|
+Coleslaw|coleslaw|cole slaw
+Fruit salad|fruit salad fresh|
+Ranch dressing|ranch dressing|ranch
+Italian dressing|italian dressing|
+Vinaigrette|vinaigrette|balsamic vinaigrette
+Tomato soup|tomato soup|
+Minestrone|minestrone|
+Clam chowder|clam chowder|chowder
+Miso soup|miso soup|
+Vegetable soup|vegetable soup|
+Chili|chili con carne beans|chili con carne
+Lentil soup|lentil soup|
+Broccoli cheddar soup|broccoli cheese soup|
+Egg drop soup|egg drop soup|
+Hot and sour soup|hot and sour soup|
+Dumplings|dumpling meat|potstickers,gyoza
+Spring roll|spring roll|
+Egg roll|egg roll|
+Bao bun|steamed bun meat|bao,pork bun
+Bibimbap|bibimbap|
+Bulgogi|bulgogi|korean bbq beef
+Kimchi|kimchi|
+Fried rice with chicken|fried rice chicken|chicken fried rice
+Curry, vegetable|vegetable curry|
+Dal|dal|lentil curry,dhal
+Samosa|samosa|
+Biryani|biryani|
+Shawarma|shawarma|
+Gyro|gyro|
+Kebab|kabob|kabob,kebab
+Paella|paella|
+Risotto|risotto|
+Gnocchi|gnocchi|
+Pierogi|pierogi|
+Empanada|empanada|
+Arepa|arepa|
+Rice and beans|rice beans|
+Poke bowl|poke|poke
+Onigiri|rice ball|rice ball
+Teriyaki bowl|teriyaki chicken rice|
+Mac salad|macaroni salad|macaroni salad
+Cookie, chocolate chip|cookie chocolate chip|cookie,chocolate chip cookie,cookies
+Cookie, oatmeal|cookie oatmeal|oatmeal cookie
+Cookie, sugar|cookie sugar|sugar cookie
+Oreo|cookie chocolate sandwich|oreos
+Brownie|brownie|brownies
+Cupcake|cupcake frosted|cupcakes
+Cake, chocolate|cake chocolate frosting|chocolate cake,cake
+Cake, vanilla|cake white frosting|vanilla cake,birthday cake
+Cheesecake|cheesecake|
+Carrot cake|carrot cake|
+Pie, apple|pie apple|apple pie
+Pie, pumpkin|pie pumpkin|pumpkin pie
+Donut, glazed|doughnut yeast glazed|donut,doughnut,glazed donut
+Donut, chocolate|doughnut chocolate|chocolate donut
+Cinnamon roll|cinnamon roll|cinnamon bun
+Danish|danish pastry|pastry
+Churro|churros|churros
+Pudding|pudding chocolate|chocolate pudding
+Jello|gelatin dessert|jell-o,gelatin
+Popsicle|ice pop|ice pop
+Mochi|mochi|
+Macaron|macaron|macarons
+Chocolate bar|candy milk chocolate|chocolate,milk chocolate
+Dark chocolate|chocolate dark|
+M&Ms|m&m|m and ms
+Snickers|snickers|
+Kit Kat|kit kat|
+Reese's cup|peanut butter cups|reeses,peanut butter cup
+Gummy bears|gummy bears|gummies,gummy candy
+Skittles|skittles|
+Hard candy|hard candy|candy
+Lollipop|lollipop|
+Marshmallows|marshmallows|marshmallow
+Granola bar|granola bar|
+Protein bar|protein bar|
+Cereal bar|cereal bar|
+Trail mix|trail mix|
+Almonds|almonds|almond
+Peanuts|peanuts roasted|peanut
+Cashews|cashews|cashew
+Walnuts|walnuts|walnut
+Pistachios|pistachios|pistachio
+Mixed nuts|mixed nuts|nuts
+Sunflower seeds|sunflower seeds|
+Pumpkin seeds|pumpkin seeds|pepitas
+Chia seeds|chia seeds|chia
+Flax seeds|flaxseed|flaxseed
+Water|water tap|
+Sparkling water|water carbonated|seltzer
+Coffee, black|coffee brewed|coffee
+Latte|coffee latte|cafe latte
+Cappuccino|cappuccino|
+Mocha|coffee mocha|cafe mocha
+Iced coffee|iced coffee|
+Frappuccino|coffee frozen blended|frappe
+Tea, unsweetened|tea hot|tea,green tea,black tea
+Sweet tea|tea iced sweetened|iced tea
+Bubble tea|bubble tea|boba,boba tea,milk tea,boba milk tea
+Chai latte|chai|chai
+Matcha latte|matcha|matcha
+Hot chocolate|hot chocolate|hot cocoa,cocoa
+Orange juice|orange juice|oj
+Apple juice|apple juice|
+Grape juice|grape juice|
+Cranberry juice|cranberry juice|
+Lemonade|lemonade|
+Soda, cola|cola|coke,soda,pop,pepsi
+Diet soda|cola diet|diet coke,diet soda,coke zero
+Lemon-lime soda|lemon lime soda|sprite,7up
+Root beer|root beer|
+Ginger ale|ginger ale|
+Sports drink|sports drink|gatorade,powerade
+Energy drink|energy drink|red bull,monster
+Coconut water|coconut water|
+Kombucha|kombucha|
+Protein shake|protein shake|protein drink
+Ketchup|ketchup|catsup
+Mustard|mustard|
+Mayonnaise|mayonnaise|mayo
+BBQ sauce|barbecue sauce|barbecue sauce
+Soy sauce|soy sauce|
+Hot sauce|hot sauce|sriracha
+Gravy|gravy|
+Olive oil|olive oil|oil
+Vegetable oil|vegetable oil|cooking oil
+Sugar|sugar white|
+Cheese sauce|cheese sauce|nacho cheese
+Alfredo sauce|alfredo sauce|
+Marinara sauce|spaghetti sauce|tomato sauce,pasta sauce
+Pesto|pesto|
+Teriyaki sauce|teriyaki sauce|
+Croutons|croutons|
+Pickles|pickles dill|pickle
+Olives|olives|olive
+Mac and cheese, boxed|macaroni cheese boxed|kraft mac and cheese
+Instant oatmeal|oatmeal instant flavored|oatmeal packet
+Pop-Tart|toaster pastry|pop tart,poptart
+Cereal with milk|cereal milk|
+Acai bowl|acai|acai
+Overnight oats|overnight oats|
+Chia pudding|chia pudding|
+Protein pancakes|pancakes whole grain|
+Bean and cheese burrito|burrito bean cheese|
+Breakfast sandwich, sausage|sausage egg cheese sandwich|sausage egg mcmuffin
+Hash brown patty|hash brown patty|
+Onion rings|onion rings|
+Mozzarella sticks|mozzarella sticks|cheese sticks
+Jalapeno poppers|jalapeno poppers|
+Loaded fries|french fries cheese|cheese fries
+Sweet potato fries|sweet potato fries|
+Corn chips|corn chips|fritos
+Cheese puffs|cheese puffs|cheetos
+Pita chips|pita chips|
+Veggie straws|vegetable chips|veggie chips
+Seaweed snack|seaweed snack|nori
+Applesauce pouch|applesauce|
+Banana bread|banana bread|
+Zucchini bread|zucchini bread|
+Scone|scone|scones
+Pound cake|pound cake|
+Tiramisu|tiramisu|
+Flan|flan|
+Rice pudding|rice pudding|
+Baklava|baklava|
+Smores|smores|s'mores
+Fruit snacks|fruit snacks|
+Applesauce cup|applesauce sweetened|
+Yogurt parfait|yogurt parfait|parfait
+Cottage cheese with fruit|cottage cheese fruit|
+Tuna roll|sushi tuna|
+Salmon roll|sushi salmon|
+Spam musubi|spam|spam
+Chicken katsu|chicken katsu|katsu
+Tonkatsu|pork cutlet breaded|
+Ramen, restaurant|ramen|tonkotsu ramen
+Pho, beef|pho beef|beef pho
+Banh mi|banh mi|
+Fried plantains|plantains fried|plantains,maduros
+Rice crispy treat|rice krispie treat|rice krispies treat
+Mango sticky rice|sticky rice|sticky rice
+Tteokbokki|rice cake korean|tteokbokki
+Japchae|japchae|
+Congee|congee|rice porridge,jook
+Hot pot|hot pot|
+Spring mix salad|spring mix|
+Steamed vegetables|mixed vegetables cooked|mixed veggies,vegetables
+Stir-fried vegetables|vegetables stir fried|
+Roasted vegetables|vegetables roasted|
+Vegetable lasagna|lasagna vegetable|
+Veggie wrap|wrap vegetable|wrap
+Chicken wrap|wrap chicken|
+Caesar wrap|chicken caesar wrap|
+Pizza bagel|pizza bagel|
+Frozen meal|frozen meal|tv dinner
+Lunchable|lunchables|lunchables
+Instant mashed potatoes|potato mashed from dry|
+Cup of noodles|ramen noodle soup|cup noodles
+Chicken pot pie|chicken pot pie|pot pie
+Shepherd's pie|shepherds pie|
+Sloppy joe|sloppy joe|
+Stuffed peppers|stuffed pepper|
+Cabbage rolls|stuffed cabbage|
+Fried egg sandwich|fried egg sandwich|
+Egg muffin|egg muffin|
+Waffle fries|waffle fries|
+Chicken fried steak|chicken fried steak|country fried steak
+Biscuits and gravy|biscuit gravy|
+Corn chowder|corn chowder|
+Gumbo|gumbo|
+Jambalaya|jambalaya|
+Fried catfish|catfish fried|catfish
+Crab cake|crab cake|
+Clams|clams cooked|
+Mussels|mussels cooked|
+Scallops|scallops cooked|
+Calamari|squid fried|fried calamari
+Oysters|oysters raw|
+Sardines|sardines canned|
+Anchovies|anchovies|
+Smoked salmon|salmon smoked|lox
+Duck|duck roasted|
+Venison|venison|deer
+Bison|bison|buffalo meat
+Liver|beef liver cooked|
+Chorizo|chorizo|
+Kielbasa|kielbasa|polish sausage
+Bratwurst|bratwurst|brat
+Italian sausage|italian sausage|
+Prosciutto|prosciutto|
+Corned beef|corned beef|
+Pastrami|pastrami|
+Bologna|bologna|
+Hard salami|salami hard|
+Chicken sausage|chicken sausage|
+Plant-based meat|meatless|impossible burger,beyond burger
+Seitan|seitan|wheat gluten
+Soy nuggets|meatless chicken nuggets|vegan nuggets
+Oat bran|oat bran|
+Cream of wheat|cream of wheat|farina
+Polenta|polenta|
+Bulgur|bulgur|
+Barley|barley cooked|
+Farro|farro|
+Wild rice|wild rice cooked|
+Spanish rice|spanish rice|mexican rice
+Coconut rice|coconut rice|
+Rice noodles|rice noodles cooked|
+Egg noodles|egg noodles cooked|
+Whole wheat pasta|pasta whole wheat cooked|
+Gluten-free pasta|pasta gluten free|
+Zucchini noodles|zucchini noodles|zoodles
+Spaghetti squash|spaghetti squash|
+Butternut squash|butternut squash|squash
+Pumpkin|pumpkin cooked|
+Beets|beets cooked|beet
+Radishes|radish|radish
+Artichoke|artichoke cooked|
+Okra|okra cooked|
+Collard greens|collard greens cooked|collards
+Swiss chard|chard cooked|chard
+Arugula|arugula|rocket
+Sprouts|bean sprouts|bean sprouts
+Jicama|jicama|
+Snap peas|snow peas|snow peas,sugar snap peas
+Leeks|leeks|
+Garlic|garlic raw|
+Ginger|ginger root|
+Jalapeno|jalapeno|jalapeno pepper
+Salsa verde|salsa verde|
+Pico de gallo|pico de gallo|
+Tzatziki|tzatziki|
+Baba ganoush|baba ghanoush|
+Tahini|tahini|
+Cream cheese, light|cream cheese light|
+Butter, whipped|butter whipped|
+Ghee|ghee|
+Coconut oil|coconut oil|
+Half and half|half and half|creamer
+Coffee creamer|coffee creamer|creamer flavored
+Evaporated milk|evaporated milk|
+Condensed milk|sweetened condensed milk|
+Goat cheese|goat cheese|chevre
+Ricotta|ricotta|
+Brie|brie|
+Blue cheese|blue cheese|
+Provolone|provolone|
+Pepper jack|pepper jack|monterey jack
+Colby jack|colby|
+Queso|queso|queso dip
+Kefir|kefir|
+Skyr|skyr|icelandic yogurt
+Gelato|gelato|
+Sorbet|sorbet|
+Ice cream sandwich|ice cream sandwich|
+Ice cream cone|ice cream cone|cone
+Sundae|sundae|
+Milkshake, chocolate|milkshake chocolate|
+Milkshake, strawberry|milkshake strawberry|
+Hot fudge|hot fudge|fudge sauce
+Caramel|caramel|caramel sauce
+Chocolate syrup|chocolate syrup|
+Sprinkles|sprinkles|
+Whipped topping|whipped topping|cool whip
+Granola, low fat|granola low fat|
+Muesli|muesli|
+Rice cereal|rice krispies|rice krispies
+Bran flakes|bran flakes|
+Raisin bran|raisin bran|
+Lucky Charms|lucky charms|
+Cinnamon Toast Crunch|cinnamon toast crunch|
+Cocoa Puffs|cocoa puffs|
+Honey Nut Cheerios|honey nut cheerios|
+Special K|special k|
+Shredded wheat|shredded wheat|
+Waffles, frozen|waffle frozen|eggo
+Pancakes, buttermilk|pancakes buttermilk|
+Crepe|crepe|crepes
+Dutch baby|dutch baby|
+Quiche|quiche|
+Frittata|frittata|
+Huevos rancheros|huevos rancheros|
+Chilaquiles|chilaquiles|
+Shakshuka|shakshuka|
+Eggs Benedict|eggs benedict|
+Avocado egg toast|avocado toast egg|
