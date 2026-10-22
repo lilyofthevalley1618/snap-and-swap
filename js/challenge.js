@@ -35,14 +35,19 @@ function startCard(again){const s=startFor();
   <p class="sub">${s?`Starts ${fmt(s)}, ends ${fmt(addDays(s,LEN-1))}.`:'Choose a date.'} Each day: log a meal, stay under your target, and move (rest days count).</p>
   <button class="btn" id="chstart" ${s?'':'disabled'}>${again?'Save start date':'Start challenge'}</button>${again?'<button class="linkbtn" id="chcancel">Cancel</button>':''}</div>`}
 
-export function challengeCard(S,target,ring){
+export function challengeCard(S,target,ring,compact){
   if(!S.challenge||editing)return startCard(!!S.challenge);
   const td=ctx.today(),st=stats(S,target);
   if(st.day<1)return `<div class="card chal"><h3>30-day challenge</h3><p class="big" style="font-size:22px">Starts ${fmt(S.challenge.start)}</p><p class="sub">${-st.day+1===1?'Tomorrow':`In ${-st.day+1} days`} — get ready!</p><button class="linkbtn" id="chedit">Change start date</button></div>`;
   if(st.day>LEN)return `<div class="card chal fin"><h3>You finished 30 days!</h3><p class="sub">${fmt(S.challenge.start)} – ${fmt(st.end)}</p>
    <div class="stats"><div><b>${st.done}</b><span>of 30 days done</span></div><div><b>${st.best}</b><span>best streak</span></div><div><b>${st.workouts}</b><span>workouts</span></div><div><b>${st.wchg==null?'—':(st.wchg>0?'+':'')+st.wchg.toFixed(1)+' lb'}</b><span>weight change</span></div></div>
    <p class="note">Every day you showed up counts. Be proud of the habits you built.</p><button class="btn" id="chrestart">Start a new challenge</button></div>`;
-  const c=checks(S,td,target),row=(ok,t,sub)=>`<li class="${ok?'ok':''}"><span class="ck">${ok?'✓':''}</span><div>${t}${sub?`<small>${sub}</small>`:''}</div></li>`;
+  const c=checks(S,td,target);
+  if(compact){const pill=(ok,l)=>`<span class="cpill ${ok?'ok':''}"><span class="ck">${ok?'✓':''}</span>${l}</span>`;
+   return `<div class="card chal compact"><div class="row" style="gap:12px;align-items:center">${ring(st.day,LEN,'of 30',76)}
+    <div class="grow"><div class="row between"><b>Day ${st.day} of 30</b><span class="streak">${st.streak} day streak</span></div>
+    <div class="cpills">${pill(c.meal,'Meal')}${pill(c.under,'Under target')}${pill(c.move,c.rest?'Rest day':'Move')}</div></div></div></div>`}
+  const row=(ok,t,sub)=>`<li class="${ok?'ok':''}"><span class="ck">${ok?'✓':''}</span><div>${t}${sub?`<small>${sub}</small>`:''}</div></li>`;
   return `<div class="card chal"><div class="row between"><h3 style="margin:0">30-day challenge</h3><span class="streak">${st.streak} day streak</span></div>
    <div class="row" style="gap:14px;align-items:center;margin-top:8px">${ring(st.day,LEN,'of 30',110)}
    <div class="grow"><b style="font-size:20px">Day ${st.day} of 30</b><p class="sub" style="margin:2px 0 0">${st.done} full days so far · best streak ${st.best}</p></div></div>

@@ -1,10 +1,12 @@
-import {load,save,today,applyTheme} from './store.js?v=5';
+import {load,save,today,applyTheme} from './store.js?v=6';
 import {plan,validate,goalDate,minHealthyWeight,PACES,FAST_NOTE} from './calc.js?v=4';
 import {ai} from './ai.js?v=3';
 import * as M from './mealui.js?v=1';
 import {planView,togglePlanDay,initPlan} from './plan.js?v=1';
 import {SHOW_SIGNIN,CLOUD,initCloud,signIn,signOut,accountCard,welcomeHTML,syncInfo,maybeResume} from './cloud.js?v=2';
-import {challengeCard,challengeClick,challengeChange,initChallenge} from './challenge.js?v=1';
+import {initQuick,quickHTML,quickClick} from './quick.js?v=1';
+import {initRemind,reminderCard,remindClick,remindChange,registerSW,checkOnOpen,schedule,onSave} from './remind.js?v=1';
+import {challengeCard,challengeClick,challengeChange,initChallenge} from './challenge.js?v=2';
 import {FOODS,swapFor} from './foods.js?v=2';
 import {ManualStepsSource} from './steps.js?v=2';
 import {runSurvey,WORKOUT_OPTS} from './survey.js?v=6';
@@ -71,7 +73,7 @@ const LOG=[
  ['skate','Skating',7.0],['martial','Martial arts',5.3],['other','Other',5.0],
 ];
 const MET=Object.fromEntries(LOG.map(([k,,m])=>[k,m]));
-initPlan({today,MET});initChallenge({today,persist:()=>save(S)});
+initPlan({today,MET});initQuick({today,persist:()=>save(S),refresh:()=>{const h=location.hash.slice(1)||'home',y=scrollY;go(h);scrollTo(0,y)}});initRemind({today,persist:()=>save(S)});initChallenge({today,persist:()=>save(S)});
 let exMode=sessionStorage.exMode||'log';
 const exSeg=()=>`<div class="xseg" role="tablist"><button class="${exMode==='log'?'on':''}" data-exmode="log">Log</button><button class="${exMode==='plan'?'on':''}" data-exmode="plan">Plan</button></div>`;
 const logLabel=k=>(LOG.find(([v])=>v===k)||[k,k])[1];
@@ -105,26 +107,29 @@ const views={
   <div class="card"><h3>This week</h3><svg viewBox="0 0 280 120" width="100%">${days.map((d,i)=>{const h=d.m/mx*70;return `<rect x="${i*40+8}" y="${92-h}" width="24" height="${Math.max(h,2)}" rx="6" fill="var(--sage-deep)"/><text x="${i*40+20}" y="${86-h}" text-anchor="middle" font-size="10" fill="var(--muted)">${d.m||''}</text><text x="${i*40+20}" y="110" text-anchor="middle" font-size="11" fill="var(--charcoal)">${d.l}</text>`}).join('')}</svg>
    <p class="sub">${days.reduce((a,d)=>a+d.m,0)} active minutes this week</p></div>
   <p class="note">Exercise calories are estimates and don't change your daily limit. Move for fun and energy! ${IC.leaf}</p>`},
- home(){const P=plan(S.profile),t=tot(),st=S.steps[today()]||0,lw=S.weights.at(-1);
-  return `<h2>Hi, ${esc(S.name||'there')}!</h2><p class="sub">Small steps, every day. You've got this.</p>
-  <div class="card limit"><p class="sub">Your daily limit</p><div class="big">${P.target.toLocaleString()} cal <span class="sub">to stay on track</span></div>
-  ${ring(t.kcal,P.target,`eaten of ${P.target.toLocaleString()}`)}
-  <div class="row between" style="margin:8px 0 12px"><span>Eaten <b>${t.kcal.toLocaleString()}</b></span><span>${t.kcal<=P.target?`<b>${(P.target-t.kcal).toLocaleString()}</b> left`:'<b>A bit over today</b>'}</span></div>
-  ${t.kcal>P.target?`<p class="note">A bit over today, tomorrow's a fresh start. ${IC.plant}</p>`:''}${macros(t)}</div>
-  ${challengeCard(S,P.target,ring)}
-  <div class="card"><h3>${IC.salad}Foods to cut back on</h3>
-  <p class="sub">These pack a lot of calories without keeping you full.</p>
-  <div class="chips">${CUTBACK.map(([k,l])=>`<span class="chip">${IC[k]}${l}</span>`).join('')}</div>
-  <p class="note" style="margin-bottom:0">A little is totally fine — balance matters.</p></div>
-  <div class="card row between"><div><h3>${IC.steps}Steps</h3><span class="sub">${st.toLocaleString()} of ${S.stepGoal.toLocaleString()} · ${exToday()} active min</span></div><button class="btn sm ghost" data-go="exercise">Open</button></div>
-  <div class="card row between"><div><h3>${IC.progress}Progress</h3><span class="sub">${lw?`${lw.w.toFixed(1)} lb → goal ${S.profile.goal} lb`:'Log your first weigh-in'}</span></div><button class="btn sm ghost" data-go="progress">Open</button></div>
-  ${P.teen?'<p class="note warn">Because you\'re under 18, your target stays gentle and focuses on habits. Please talk to a doctor or parent before changing your diet.</p>':''}`},
+ home(){const P=plan(S.profile),t=tot(),st=S.steps[today()]||0,lw=S.weights.at(-1),left=P.target-t.kcal;
+  return `<h2>Hi, ${esc(S.name||'there')}!</h2>
+  <div class="card today"><div class="row between"><h3 style="margin:0">Today</h3><span class="sub">Target ${P.target.toLocaleString()}</span></div>
+   <div class="tring">${ring(Math.max(0,left),P.target,left>=0?'cal left':'a bit over')}</div>
+   <p class="sub center">${t.kcal.toLocaleString()} eaten · P${Math.round(t.p)} C${Math.round(t.c)} F${Math.round(t.f)}</p>
+   ${left<0?`<p class="note">Tomorrow's a fresh start. ${IC.plant}</p>`:''}
+   <button class="btn" data-go="snap">${IC.cam}Log food</button></div>
+  ${challengeCard(S,P.target,ring,true)}
+  ${P.teen?'<p class="note warn">Under 18, your target stays gentle. Check with a doctor or parent before changing how you eat.</p>':''}
+  <details class="more"><summary>See more</summary>
+  <div class="card"><h3>${IC.salad}Foods to cut back on</h3><p class="sub">Lots of calories, not very filling.</p>
+  <div class="chips">${CUTBACK.map(([k,l])=>`<span class="chip">${IC[k]}${l}</span>`).join('')}</div><p class="sub" style="margin:6px 0 0">A little is fine. Balance matters.</p></div>
+  <div class="card row between"><div><h3>${IC.steps}Steps</h3><span class="sub">${st.toLocaleString()} of ${S.stepGoal.toLocaleString()}</span></div><button class="btn sm ghost" data-go="exercise">Open</button></div>
+  <div class="card row between"><div><h3>${IC.progress}Progress</h3><span class="sub">${lw?`${lw.w.toFixed(1)} → ${S.profile.goal} lb`:'Log a weigh-in'}</span></div><button class="btn sm ghost" data-go="progress">Open</button></div>
+  <div class="card row between"><div><h3>${IC.leaf}Swaps</h3><span class="sub">Lighter ideas for what you log</span></div><button class="btn sm ghost" data-go="log">Open</button></div>
+  </details>`},
  snap(){return `<h2>Snap a meal</h2><p class="sub">Take a photo and we'll estimate it.</p>
   <div class="card"><label class="btn" style="text-align:center;display:flex;align-items:center;justify-content:center;gap:8px">${IC.cam}Take or upload photo<input id="ph" type="file" accept="image/*" capture="environment" hidden></label>
   <div id="res"></div></div>
-  <div class="card"><h3>${IC.search}Search a food</h3>${M.searchBox()}</div>${DISC}`},
+  <div class="card"><h3>${IC.search}Search a food</h3>${quickHTML(S,{again:false})}${M.searchBox()}</div>${DISC}`},
  log(){const P=plan(S.profile),t=tot();
   return `<h2>Food log</h2><p class="sub">${t.kcal} of ${P.target} kcal today</p>
+  ${(()=>{const q=quickHTML(S);return q?`<div class="card">${q}</div>`:''})()}
   <div class="card">${meals().length?meals().map(m=>{const sw=swapFor(m.name,S.prefs);return `<div class="item"><div class="grow"><b>${esc(m.name)}</b><div class="sub">${m.t||''} · ${m.kcal} kcal · P${m.p} C${m.c} F${m.f}</div>
    ${sw?`<div class="swap">${IC.leaf}<b>Try:</b> ${esc(sw.to)} — ${sw.why}, about ${sw.saves} kcal lighter</div>`:''}</div>
    <div><button class="x" data-edit="${m.id}" title="Edit">${IC.pencil}</button><button class="x" data-del="${m.id}" title="Delete">✕</button></div></div>`}).join(''):'<p class="sub">Nothing logged yet. Snap your first meal!</p>'}</div>
@@ -143,6 +148,7 @@ const views={
   return `<h2>${S.profile?'Profile':'Welcome'}</h2><p class="sub">${S.profile?'Your goals and settings':'Tell us a little about you to set a healthy daily target.'}</p>
   ${P?`<div class="card"><h3>Daily target</h3><div class="big">${P.target} kcal</div><p class="sub">Maintenance ≈ ${P.tdee} kcal · deficit ${P.deficit} kcal · never below ${P.floor}</p><p class="sub">Real pace: <b>${P.weekly.toFixed(1)} lb/week</b></p>${P.why?`<p class="note">${P.why}</p>`:''}</div>`:''}
   ${accountCard()}
+  ${reminderCard(S)}
   <div class="card"><h3>App colors</h3><p class="sub">Pick a look — it updates right away.</p>${themeCards(th)}</div>
   <form class="card" id="pf"><div class="grid2"><div><label>Age</label><input name="age" type="number" value="${p.age}" required></div>
   <div><label>Sex</label><select name="sex">${o('female','Female',p.sex)}${o('male','Male',p.sex)}</select></div>
@@ -189,6 +195,8 @@ document.addEventListener('click',e=>{if(e.target.closest('.survey'))return;
  const mh=M.handleClick(e);if(mh==='logged')return go('log');if(mh)return;
  const pick=e.target.closest('[data-theme-pick]');
  if(pick){S.theme=pick.dataset.themePick;applyTheme(S.theme);persist();return go('profile')}
+ const qa=e.target.closest('[data-qa],[data-undo]');if(qa&&quickClick(S,qa))return;
+ const rm=e.target.closest('#remAllow,#remLater');if(rm){remindClick(S,rm).then(h=>{if(h){const y=scrollY;go('profile');scrollTo(0,y)}});return}
  const ac=e.target.closest('#signin,#signout,#wGoogle,#wGuest');
  if(ac){if(ac.id==='signin')signIn();else if(ac.id==='signout'){if(confirm('Sign out? Your data stays on this device too.'))signOut()}else if(ac.id==='wGuest'){localStorage.setItem('snapswap.sync',JSON.stringify({...syncInfo(),welcomed:1}));closeWelcome();boot()}else welcomeGoogle();return}
  const chx=e.target.closest('[data-chpick],#chstart,#chedit,#chcancel,#chrestart');
@@ -206,7 +214,7 @@ document.addEventListener('click',e=>{if(e.target.closest('.survey'))return;
  if(el.id==='wsave'){const w=+$('#w').value;if(w>50&&w<700){S.weights=S.weights.filter(x=>x.d!==today());S.weights.push({d:today(),w});S.weights.sort((a,b)=>a.d<b.d?-1:1);persist()}return go('progress')}
 });
 document.addEventListener('input',e=>{M.handleInput(e)});
-document.addEventListener('change',e=>{if(challengeChange(e)){const y=scrollY;go('home');scrollTo(0,y);return}if(e.target.id==='ph'&&e.target.files[0]){const f=e.target.files[0];photoURL=URL.createObjectURL(f);analyze(f)}if(e.target.name==='wt'){e.target.closest('.opt')?.classList.toggle('on',e.target.checked)}
+document.addEventListener('change',e=>{if(e.target.id==='remOn'||e.target.id==='remTime'){remindChange(S,e).then(h=>{if(h){const y=scrollY;go('profile');scrollTo(0,y)}});return}if(challengeChange(e)){const y=scrollY;go('home');scrollTo(0,y);return}if(e.target.id==='ph'&&e.target.files[0]){const f=e.target.files[0];photoURL=URL.createObjectURL(f);analyze(f)}if(e.target.name==='wt'){e.target.closest('.opt')?.classList.toggle('on',e.target.checked)}
  if(e.target.id==='pace'){e.target.form.requestSubmit();return}
  if(e.target.id==='ext'){const o=e.target.value==='other',n=$('#exn');if(n){n.hidden=!o;if(o)n.focus()}}});
 document.addEventListener('submit',e=>{if(e.target.closest('.survey'))return;e.preventDefault();const fd=Object.fromEntries(new FormData(e.target));
@@ -225,5 +233,5 @@ async function welcomeGoogle(){const b=W&&W.querySelector('#wGoogle');if(b){b.di
 initCloud({S,onData:()=>{applyTheme(S.theme||'sage');if(W&&S.profile){closeWelcome();document.querySelector('.survey')?.remove();start()}else if(!W&&!document.querySelector('.survey')){const y=scrollY;start();scrollTo(0,y)}}});
 CLOUD.onChange=()=>{if(W&&CLOUD.user&&CLOUD.status.startsWith('Synced')){closeWelcome();S.profile?start():boot()} // signed in from the welcome screen
  const a=document.querySelector('#acct');if(a)a.outerHTML=accountCard()};
-maybeResume();
+maybeResume();registerSW();window.__onSave=onSave;if(S.profile)setTimeout(()=>{checkOnOpen(S);if(S.reminder?.on)schedule(S)},1500);
 if(SHOW_SIGNIN&&!S.profile&&!syncInfo().welcomed&&!new URLSearchParams(location.search).has('survey'))showWelcome();else boot();

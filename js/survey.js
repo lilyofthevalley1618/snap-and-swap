@@ -1,6 +1,6 @@
 // First-open welcome survey: one tiny question per screen. Weights stored in lb, height in inches.
 import {plan,goalDate,minHealthyWeight,PACES,FAST_NOTE} from './calc.js?v=4';
-import {applyTheme} from './store.js?v=5';
+import {applyTheme} from './store.js?v=6';
 const KG=0.453592;
 const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 export const WORKOUT_OPTS=[

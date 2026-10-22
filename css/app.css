@@ -100,3 +100,32 @@ h3 .ic{margin-right:8px}.chip .ic{margin-right:4px;vertical-align:-.15em}
 .welcome .sub{margin-bottom:22px}.welcome .small{font-size:13px;margin-top:16px}
 .gbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:50px;border-radius:14px;border:1px solid #DADCE0;background:#fff;color:#3C4043;font:700 16px inherit;font-family:inherit;cursor:pointer;margin-bottom:12px}
 .gbtn:disabled{opacity:.7}
+/* simpler Home */
+#view>.card,#view>details>.card{margin:18px 0}
+.card.today{border:2px solid var(--sage-deep);padding:18px}
+.tring{display:flex;justify-content:center;margin:10px 0 2px}
+.center{text-align:center}
+.card.today .btn{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px}
+.chal.compact{padding:12px 14px}
+.cpills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.cpill{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:var(--muted)}
+.cpill .ck{width:18px;height:18px;border-radius:50%;border:2px solid var(--sage-deep);display:grid;place-items:center;color:#fff;font-size:10px;font-weight:800}
+.cpill.ok{color:var(--charcoal)}.cpill.ok .ck{background:var(--sage-deep)}
+details.more>summary{list-style:none;cursor:pointer;text-align:center;font-weight:700;color:var(--sage-deep);padding:12px;border:1px dashed var(--line);border-radius:var(--radius);margin-top:18px}
+details.more>summary::-webkit-details-marker{display:none}
+details.more>summary::after{content:' ▾'}details.more[open]>summary::after{content:' ▴'}
+/* quick log chips + toast */
+.qchips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.qchip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 12px;font:600 14px/1.1 'Nunito',sans-serif;color:var(--charcoal);cursor:pointer;min-height:40px}
+.qchip small{color:var(--muted);font-weight:600}
+.qchip .plus{color:var(--sage-deep);font-weight:800}
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:var(--charcoal);color:#fff;border-radius:14px;padding:10px 12px 10px 16px;display:flex;gap:12px;align-items:center;z-index:30;font-weight:600;max-width:92vw;box-shadow:0 6px 20px rgba(0,0,0,.2)}
+.toast button{background:none;border:0;color:var(--sage-tint);font:800 15px 'Nunito',sans-serif;text-decoration:underline;cursor:pointer;min-height:0;padding:4px}
+/* reminder */
+.switch{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer}
+.switch input{appearance:none;width:48px;height:28px;border-radius:999px;background:var(--line);position:relative;cursor:pointer;flex:none;min-height:0;margin:0;border:0;transition:background .2s}
+.switch input::after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.switch input:checked{background:var(--sage-deep)}.switch input:checked::after{left:23px}
+.explain{border:2px solid var(--sage-deep);background:var(--sage-tint)}
+.explain .row{gap:10px;margin-top:10px}.explain .btn{flex:1}
+.toast span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
