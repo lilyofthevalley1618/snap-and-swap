@@ -2,7 +2,7 @@
 // Guest mode is the default and never loads Firebase. localStorage stays the offline copy.
 // The web config below is PUBLIC by design (it identifies the project; access is enforced by Firestore rules).
 const FB_CFG={apiKey:'AIzaSyDMzEHbnOU3TLbQflpSvGLrCPfw_MkNKGY',authDomain:'zapling-1492d.firebaseapp.com',projectId:'zapling-1492d',storageBucket:'zapling-1492d.firebasestorage.app',messagingSenderId:'589701782863',appId:'1:589701782863:web:f9d79f46d5183bdcb5f93a'};
-export const SHOW_SIGNIN=false; // flip to true once Firestore rules are published (RULES_SETUP.md)
+export const SHOW_SIGNIN=true; // flip to true once Firestore rules are published (RULES_SETUP.md)
 const FB_V='12.3.0',SYNC_KEY='snapswap.sync',COL='snapswap_users';
 export const CLOUD={fb:null,user:null,status:'',err:'',t:null,pulled:0,onChange:null};
 let ctx;export const initCloud=c=>{ctx=c;window.__cloudSoon=()=>{if(!CLOUD.user)return;clearTimeout(CLOUD.t);CLOUD.t=setTimeout(()=>push().catch(fail),3000)}};

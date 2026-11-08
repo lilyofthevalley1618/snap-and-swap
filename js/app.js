@@ -3,7 +3,7 @@ import {plan,validate,goalDate,minHealthyWeight,PACES,FAST_NOTE} from './calc.js
 import {ai} from './ai.js?v=3';
 import * as M from './mealui.js?v=1';
 import {planView,togglePlanDay,initPlan} from './plan.js?v=1';
-import {SHOW_SIGNIN,CLOUD,initCloud,signIn,signOut,accountCard,welcomeHTML,syncInfo,maybeResume} from './cloud.js?v=2';
+import {SHOW_SIGNIN,CLOUD,initCloud,signIn,signOut,accountCard,welcomeHTML,syncInfo,maybeResume} from './cloud.js?v=3';
 import {initQuick,quickHTML,quickClick} from './quick.js?v=1';
 import {initRemind,reminderCard,remindClick,remindChange,registerSW,checkOnOpen,schedule,onSave} from './remind.js?v=1';
 import {challengeCard,challengeClick,challengeChange,initChallenge} from './challenge.js?v=2';
