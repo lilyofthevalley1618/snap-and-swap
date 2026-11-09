@@ -9,7 +9,7 @@ import {initRemind,reminderCard,remindClick,remindChange,registerSW,checkOnOpen,
 import {challengeCard,challengeClick,challengeChange,initChallenge} from './challenge.js?v=2';
 import {FOODS,swapFor} from './foods.js?v=2';
 import {ManualStepsSource} from './steps.js?v=2';
-import {runSurvey,WORKOUT_OPTS} from './survey.js?v=6';
+import {runSurvey,WORKOUT_OPTS} from './survey.js?v=8';
 
 const S=load(); const persist=()=>save(S);
 M.initMealUI({S,persist:()=>save(S),today}); const steps=new ManualStepsSource(S,save);

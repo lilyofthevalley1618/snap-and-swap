@@ -28,7 +28,7 @@ export function runSurvey(S,done){
  const box=document.createElement('div');box.className='survey';document.body.appendChild(box);
  const toU=lb=>a.unit==='kg'?+(lb*KG).toFixed(1):+(+lb).toFixed(1), fromU=v=>a.unit==='kg'?v/KG:v;
  const unitT=()=>`<div class="seg">${['lb','kg'].map(u=>`<button type="button" data-unit="${u}" class="${a.unit===u?'on':''}">${u}</button>`).join('')}</div>`;
- const tap=(key,opts,multi)=>`<div class="opts">${opts.map(([v,l,s])=>{const on=multi?a[key].includes(v):String(a[key])===String(v);return `<button type="button" class="opt ${on?'on':''}" data-k="${key}" data-v="${v}" ${multi?'data-multi':''}><b>${l}</b>${s?`<span>${s}</span>`:''}</button>`}).join('')}</div>`;
+ const tap=(key,opts,multi)=>`<div class="opts">${opts.map(([v,l,s])=>{const on=multi?(a[key].includes(v)||(key==='prefs'&&v==='none'&&a[key].length===0)):String(a[key])===String(v);return `<button type="button" class="opt ${on?'on':''}" data-k="${key}" data-v="${v}" ${multi?'data-multi':''}><b>${l}</b>${s?`<span>${s}</span>`:''}</button>`}).join('')}</div>`;
  let note='';
  const steps=[
   {q:"Hi! What's your name?",h:()=>`<input id="i" autocomplete="given-name" value="${esc(a.name)}" placeholder="Your first name">`,r:()=>{a.name=$i().trim();return a.name?null:'Tell us what to call you.'}},
@@ -65,8 +65,8 @@ export function runSurvey(S,done){
   if(b.dataset.back!==undefined){i--;return draw()}
   if(b.disabled)return;if(b.dataset.k){const k=b.dataset.k,v=b.dataset.v;
    if(k==='theme'){a.theme=v;applyTheme(v);return draw()}
-   if(b.hasAttribute('data-multi')){a[k]=v==='none'?[]:a[k].includes(v)?a[k].filter(x=>x!==v):[...a[k].filter(x=>x!=='none'),v]}else a[k]=k==='pace'||k==='stepGoal'?+v:v;
-   if(!b.hasAttribute('data-multi')&&steps[i].r()===null&&!steps[i].last){i++;}return draw()}});
+   if(b.hasAttribute('data-multi')){a[k]=v==='none'?(k==='prefs'?['none']:[]):a[k].includes(v)?a[k].filter(x=>x!==v):[...a[k].filter(x=>x!=='none'),v]}else a[k]=k==='pace'||k==='stepGoal'?+v:v;
+   if((!b.hasAttribute('data-multi')||(k==='prefs'&&v==='none'))&&steps[i].r()===null&&!steps[i].last){i++;}return draw()}});
  box.addEventListener('submit',e=>{e.preventDefault();const err=steps[i].r();if(err)return draw(err);
   if(steps[i].last){Object.assign(S,{name:a.name,unit:a.unit,mainGoal:a.mainGoal,prefs:a.prefs,stepGoal:a.stepGoal,workoutTypes:a.workoutTypes,theme:a.theme,profile:prof()});applyTheme(a.theme);box.remove();return done()}
   i++;draw()});
